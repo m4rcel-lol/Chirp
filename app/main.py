@@ -70,10 +70,12 @@ def before_request():
 
     user_id = session.get('user_id')
     if user_id:
-        g.user = g.db.execute(
-            'SELECT * FROM users WHERE id = ? AND is_suspended = 0',
-            (user_id,)
-        ).fetchone()
+        g.user = g.db.execute('''
+            SELECT u.*, corp.profile_pic as corp_profile_pic
+            FROM users u
+            LEFT JOIN users corp ON u.affiliated_with = corp.id
+            WHERE u.id = ? AND u.is_suspended = 0
+        ''', (user_id,)).fetchone()
         if g.user is None:
             session.clear()
 

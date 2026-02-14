@@ -1,0 +1,16 @@
+{% from "components/icons.html" import icon %}
+{% macro verification_badges(user, field_prefix='') %}
+{%- if field_prefix -%}
+  {%- set verified = user[field_prefix + 'verified'] -%}
+  {%- set corp_verified = user[field_prefix + 'corp_verified'] -%}
+  {%- set affiliated = user[field_prefix + 'affiliated_with'] -%}
+  {%- set corp_pic = user[field_prefix + 'corp_profile_pic'] -%}
+{%- else -%}
+  {%- set keys = user.keys() -%}
+  {%- set verified = user['is_verified'] if 'is_verified' in keys else 0 -%}
+  {%- set corp_verified = user['is_corp_verified'] if 'is_corp_verified' in keys else 0 -%}
+  {%- set affiliated = user['affiliated_with'] if 'affiliated_with' in keys else none -%}
+  {%- set corp_pic = user['corp_profile_pic'] if 'corp_profile_pic' in keys else none -%}
+{%- endif -%}
+{%- if corp_verified %}{{ icon('verified', 'corp-badge') }}{% elif verified %}<span class="affiliation-badge">{{ icon('verified', 'verified-badge') }}{% if affiliated and corp_pic %}<img src="{{ corp_pic }}" alt="" class="affiliation-pfp">{% endif %}</span>{% endif -%}
+{%- endmacro %}

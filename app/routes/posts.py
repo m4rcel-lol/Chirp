@@ -87,8 +87,11 @@ def enrich_post(post, db, current_user=None):
     # Get quote post if exists
     if post['quote_id']:
         quoted = db.execute('''
-            SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified
+            SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+                   u.is_corp_verified, u.affiliated_with,
+                   corp.profile_pic as corp_profile_pic
             FROM posts p JOIN users u ON p.user_id = u.id
+            LEFT JOIN users corp ON u.affiliated_with = corp.id
             WHERE p.id = ? AND p.is_deleted = 0
         ''', (post['quote_id'],)).fetchone()
         p['quoted_post'] = dict(quoted) if quoted else None
@@ -197,8 +200,11 @@ def compose():
     if quote_id:
         db = g.db
         quoted_post = db.execute('''
-            SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified
+            SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+                   u.is_corp_verified, u.affiliated_with,
+                   corp.profile_pic as corp_profile_pic
             FROM posts p JOIN users u ON p.user_id = u.id
+            LEFT JOIN users corp ON u.affiliated_with = corp.id
             WHERE p.id = ? AND p.is_deleted = 0
         ''', (quote_id,)).fetchone()
 
@@ -212,11 +218,14 @@ def view_post(post_id):
     db = g.db
     post = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts WHERE parent_id = p.id AND is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts WHERE repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE p.id = ? AND p.is_deleted = 0
     ''', (post_id,)).fetchone()
 
@@ -254,11 +263,14 @@ def view_post(post_id):
     # Get replies
     replies = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts WHERE parent_id = p.id AND is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts WHERE repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE p.parent_id = ? AND p.is_deleted = 0
         ORDER BY p.created_at ASC
     ''', (post_id,)).fetchall()

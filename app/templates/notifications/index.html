@@ -2,6 +2,7 @@
 {% block title %}Notifications - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container">
     <div class="page-header">
         <h2>Notifications</h2>
@@ -25,7 +26,9 @@
                 {{ icon(notif_icons.get(notif.type, 'notifications'), 'notif-icon') }}
                 <div>
                     {% if notif.actor_name %}
-                    <a href="{{ url_for('auth.profile', username=notif.actor_name) }}"><strong>{{ notif.actor_display or notif.actor_name }}</strong></a>
+                    <a href="{{ url_for('auth.profile', username=notif.actor_name) }}"><strong>{{ notif.actor_display or notif.actor_name }}</strong>
+                        {{ verification_badges(notif, 'actor_') }}
+                    </a>
                     {% endif %}
                     {% if notif.type == 'like' %}liked your chirp
                     {% elif notif.type == 'follow' %}followed you

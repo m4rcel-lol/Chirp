@@ -134,6 +134,15 @@ def user_action(user_id):
         audit_log(db, g.user['id'], 'toggle_verify', 'user', user_id)
         flash(f"{'Verified' if new_val else 'Unverified'} @{user['username']}", 'success')
 
+    elif action == 'corp_verify':
+        new_val = 0 if user['is_corp_verified'] else 1
+        db.execute('UPDATE users SET is_corp_verified = ?, is_verified = 1 WHERE id = ?', (new_val, user_id))
+        if not new_val:
+            # Remove all affiliations when corp verification is revoked
+            db.execute('UPDATE users SET affiliated_with = NULL WHERE affiliated_with = ?', (user_id,))
+        audit_log(db, g.user['id'], 'toggle_corp_verify', 'user', user_id)
+        flash(f"{'Granted' if new_val else 'Revoked'} corporation verification for @{user['username']}", 'success')
+
     elif action == 'suspend':
         reason = bleach.clean(request.form.get('reason', ''))
         db.execute('UPDATE users SET is_suspended = 1, suspend_reason = ? WHERE id = ?',

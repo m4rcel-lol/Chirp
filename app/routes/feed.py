@@ -15,11 +15,14 @@ def get_feed_posts(db, user, page=1, per_page=20):
     offset = (page - 1) * per_page
     posts = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts rp WHERE rp.repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         LEFT JOIN mutes m ON m.muter_id = ? AND m.muted_id = p.user_id
         LEFT JOIN blocks b ON b.blocker_id = ? AND b.blocked_id = p.user_id
         WHERE p.is_deleted = 0
@@ -85,11 +88,14 @@ def explore():
     # Trending posts (most liked in last 24h)
     trending_posts = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts rp WHERE rp.repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE p.is_deleted = 0
           AND p.parent_id IS NULL
           AND p.created_at > datetime('now', '-24 hours')
@@ -155,11 +161,14 @@ def search():
     else:  # posts
         results = db.execute('''
             SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+                   u.is_corp_verified, u.affiliated_with,
+                   corp.profile_pic as corp_profile_pic,
                    (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                    (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.is_deleted = 0) as reply_count,
                    (SELECT COUNT(*) FROM posts rp WHERE rp.repost_id = p.id) as repost_count
             FROM posts p
             JOIN users u ON p.user_id = u.id
+            LEFT JOIN users corp ON u.affiliated_with = corp.id
             WHERE p.content LIKE ?
               AND p.is_deleted = 0
             ORDER BY p.created_at DESC
@@ -178,11 +187,14 @@ def hashtag(tag):
     db = g.db
     posts = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts rp WHERE rp.repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         JOIN post_hashtags ph ON p.id = ph.post_id
         JOIN hashtags h ON ph.hashtag_id = h.id
         WHERE h.tag = ? AND p.is_deleted = 0
@@ -204,12 +216,15 @@ def bookmarks():
     db = g.db
     posts = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts r WHERE r.parent_id = p.id AND r.is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts rp WHERE rp.repost_id = p.id) as repost_count
         FROM bookmarks b
         JOIN posts p ON b.post_id = p.id
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE b.user_id = ? AND p.is_deleted = 0
         ORDER BY b.created_at DESC
         LIMIT 50

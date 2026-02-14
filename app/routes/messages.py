@@ -34,9 +34,12 @@ def inbox():
     conv_list = []
     for conv in conversations:
         members = db.execute('''
-            SELECT u.id, u.username, u.display_name, u.profile_pic, u.is_verified
+            SELECT u.id, u.username, u.display_name, u.profile_pic, u.is_verified,
+                   u.is_corp_verified, u.affiliated_with,
+                   corp.profile_pic as corp_profile_pic
             FROM conversation_members cm
             JOIN users u ON cm.user_id = u.id
+            LEFT JOIN users corp ON u.affiliated_with = corp.id
             WHERE cm.conversation_id = ? AND cm.user_id != ?
         ''', (conv['id'], g.user['id'])).fetchall()
         conv_dict = dict(conv)
@@ -64,9 +67,12 @@ def conversation(conv_id):
         abort(404)
 
     messages = db.execute('''
-        SELECT m.*, u.username, u.display_name, u.profile_pic, u.is_verified
+        SELECT m.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic
         FROM messages m
         JOIN users u ON m.sender_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE m.conversation_id = ? AND m.is_deleted = 0
         ORDER BY m.created_at ASC
     ''', (conv_id,)).fetchall()
@@ -80,9 +86,12 @@ def conversation(conv_id):
 
     # Get other members
     members = db.execute('''
-        SELECT u.id, u.username, u.display_name, u.profile_pic, u.is_verified
+        SELECT u.id, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic
         FROM conversation_members cm
         JOIN users u ON cm.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE cm.conversation_id = ?
     ''', (conv_id,)).fetchall()
 

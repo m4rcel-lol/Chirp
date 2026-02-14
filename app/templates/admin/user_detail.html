@@ -2,6 +2,7 @@
 {% block title %}User: {{ user.username }} - Admin{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container">
     <div class="page-header">
         <a href="{{ url_for('admin.users') }}" class="btn-icon">{{ icon('arrow_back') }}</a>
@@ -10,10 +11,10 @@
 
     <div class="settings-card">
         <div class="user-detail-header">
-            <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-lg">
+            <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-lg{% if user.is_corp_verified %} corp-avatar{% endif %}">
             <div>
                 <h3>{{ user.display_name }}
-                    {% if user.is_verified %}{{ icon('verified', 'verified-badge') }}{% endif %}
+                    {{ verification_badges(user) }}
                 </h3>
                 <p>@{{ user.username }} · {{ user.email }}</p>
                 <p>Joined: {{ user.created_at[:10] }} · {{ post_count }} posts</p>
@@ -26,6 +27,12 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="action" value="verify">
                 <button type="submit" class="btn btn-outlined">{{ 'Remove' if user.is_verified else 'Grant' }} Verification</button>
+            </form>
+
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="corp_verify">
+                <button type="submit" class="btn btn-outlined">{{ icon('business', '', 18) }} {{ 'Remove' if user.is_corp_verified else 'Grant' }} Corp Verification</button>
             </form>
 
             <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">

@@ -2,6 +2,7 @@
 {% block title %}Conversation - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container messages-page">
     <div class="page-header">
         <a href="{{ url_for('messages.inbox') }}" class="btn-icon">
@@ -10,7 +11,9 @@
         <div class="conv-header-info">
             {% for member in members %}
             {% if member.id != current_user.id %}
-            <span>{{ member.display_name }}</span>
+            <span>{{ member.display_name }}
+                {{ verification_badges(member) }}
+            </span>
             {% endif %}
             {% endfor %}
         </div>
@@ -20,11 +23,13 @@
         {% for msg in messages %}
         <div class="message {% if msg.sender_id == current_user.id %}message-sent{% else %}message-received{% endif %}">
             {% if msg.sender_id != current_user.id %}
-            <img src="{{ msg.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-xs">
+            <img src="{{ msg.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-xs{% if msg.is_corp_verified %} corp-avatar{% endif %}">
             {% endif %}
             <div class="message-bubble">
                 {% if msg.sender_id != current_user.id %}
-                <span class="message-sender">{{ msg.display_name }}</span>
+                <span class="message-sender">{{ msg.display_name }}
+                    {{ verification_badges(msg) }}
+                </span>
                 {% endif %}
                 <p>{{ msg.content }}</p>
                 <span class="message-time">{{ msg.created_at[11:16] }}</span>

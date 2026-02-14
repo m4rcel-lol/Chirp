@@ -48,6 +48,8 @@ def init_db():
             profile_pic TEXT DEFAULT '',
             banner_pic TEXT DEFAULT '',
             is_verified INTEGER DEFAULT 0,
+            is_corp_verified INTEGER DEFAULT 0,
+            affiliated_with INTEGER,
             is_admin INTEGER DEFAULT 0,
             is_moderator INTEGER DEFAULT 0,
             is_private INTEGER DEFAULT 0,

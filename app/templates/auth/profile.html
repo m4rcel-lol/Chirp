@@ -2,6 +2,7 @@
 {% block title %}{{ profile_user.display_name }} (@{{ profile_user.username }}) - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container">
     <div class="page-header">
         <a href="javascript:history.back()" class="btn-icon">
@@ -18,7 +19,7 @@
         </div>
         <div class="profile-info-section">
             <div class="profile-avatar-row">
-                <img src="{{ profile_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="{{ profile_user.username }}" class="avatar-lg profile-avatar">
+                <img src="{{ profile_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="{{ profile_user.username }}" class="avatar-lg profile-avatar{% if profile_user.is_corp_verified %} corp-avatar{% endif %}">
                 <div class="profile-actions">
                     {% if is_own_profile %}
                     <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-outlined">Edit profile</a>
@@ -29,6 +30,15 @@
                             {{ 'Following' if is_following else 'Follow' }}
                         </button>
                     </form>
+                    {% if current_user and current_user.is_corp_verified %}
+                    <form method="POST" action="{{ url_for('auth.affiliate_user', user_id=profile_user.id) }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit" class="btn {% if profile_user.affiliated_with == current_user.id %}btn-outlined{% else %}btn-tonal{% endif %}">
+                            {{ icon('business', '', 18) }}
+                            {{ 'Unaffiliate' if profile_user.affiliated_with == current_user.id else 'Affiliate' }}
+                        </button>
+                    </form>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -36,9 +46,7 @@
             <div class="profile-details">
                 <h2 class="profile-name">
                     {{ profile_user.display_name }}
-                    {% if profile_user.is_verified %}
-                    {{ icon('verified', 'verified-badge') }}
-                    {% endif %}
+                    {{ verification_badges(profile_user) }}
                 </h2>
                 <span class="profile-username">@{{ profile_user.username }}</span>
 

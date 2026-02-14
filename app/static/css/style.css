@@ -886,6 +886,33 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
     display: inline-block;
 }
 
+.corp-badge {
+    color: var(--md-sys-color-tertiary);
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.corp-avatar {
+    border-radius: var(--md-sys-shape-corner-medium) !important;
+}
+
+.affiliation-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    vertical-align: middle;
+}
+
+.affiliation-badge .affiliation-pfp {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
 .post-time {
     color: var(--md-sys-color-on-surface-variant);
     font-size: 0.85rem;

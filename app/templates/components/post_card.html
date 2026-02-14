@@ -1,4 +1,5 @@
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 {% macro render_post(post, show_actions=true) %}
 <article class="post-card" id="post-{{ post.id }}">
     {% if post.get('staff_notes') %}
@@ -13,13 +14,11 @@
 
     <div class="post-header">
         <a href="{{ url_for('auth.profile', username=post.username) }}" class="post-author">
-            <img src="{{ post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+            <img src="{{ post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar{% if post.is_corp_verified %} corp-avatar{% endif %}">
             <div class="author-info">
                 <span class="display-name">
                     {{ post.display_name }}
-                    {% if post.is_verified %}
-                    {{ icon('verified', 'verified-badge') }}
-                    {% endif %}
+                    {{ verification_badges(post) }}
                 </span>
                 <span class="username">@{{ post.username }}</span>
             </div>
@@ -40,8 +39,10 @@
     <div class="quoted-post">
         <div class="post-header">
             <a href="{{ url_for('auth.profile', username=post.quoted_post.username) }}" class="post-author">
-                <img src="{{ post.quoted_post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
-                <span class="display-name">{{ post.quoted_post.display_name }}</span>
+                <img src="{{ post.quoted_post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm{% if post.quoted_post.is_corp_verified %} corp-avatar{% endif %}">
+                <span class="display-name">{{ post.quoted_post.display_name }}
+                    {{ verification_badges(post.quoted_post) }}
+                </span>
                 <span class="username">@{{ post.quoted_post.username }}</span>
             </a>
         </div>

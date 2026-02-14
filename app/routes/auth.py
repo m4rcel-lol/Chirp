@@ -154,7 +154,12 @@ def logout():
 @auth_bp.route('/user/<username>')
 def profile(username):
     db = g.db
-    user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+    user = db.execute('''
+        SELECT u.*, corp.profile_pic as corp_profile_pic
+        FROM users u
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
+        WHERE u.username = ?
+    ''', (username,)).fetchone()
     if not user:
         abort(404)
 
@@ -189,11 +194,14 @@ def profile(username):
     # Get user's posts
     posts = db.execute('''
         SELECT p.*, u.username, u.display_name, u.profile_pic, u.is_verified,
+               u.is_corp_verified, u.affiliated_with,
+               corp.profile_pic as corp_profile_pic,
                (SELECT COUNT(*) FROM likes WHERE post_id = p.id) as like_count,
                (SELECT COUNT(*) FROM posts WHERE parent_id = p.id AND is_deleted = 0) as reply_count,
                (SELECT COUNT(*) FROM posts WHERE repost_id = p.id) as repost_count
         FROM posts p
         JOIN users u ON p.user_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         WHERE p.user_id = ? AND p.is_deleted = 0
         ORDER BY p.is_pinned DESC, p.created_at DESC
         LIMIT 50
@@ -420,3 +428,35 @@ def mute_user(user_id):
     db.commit()
 
     return redirect(request.referrer or url_for('feed.home'))
+
+
+# ── Affiliation ──────────────────────────────────────────────────────
+
+@auth_bp.route('/affiliate/<int:user_id>', methods=['POST'])
+def affiliate_user(user_id):
+    if not g.user or g.user['id'] == user_id:
+        abort(400)
+
+    # Only corp-verified users can affiliate others
+    if not g.user['is_corp_verified']:
+        flash('Only corporation verified users can affiliate others.', 'error')
+        return redirect(request.referrer or url_for('feed.home'))
+
+    db = g.db
+    target = db.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+    if not target:
+        abort(404)
+
+    if target['affiliated_with'] == g.user['id']:
+        # Remove affiliation
+        db.execute('UPDATE users SET affiliated_with = NULL WHERE id = ?', (user_id,))
+        db.commit()
+        flash(f'Removed affiliation for @{target["username"]}', 'info')
+    else:
+        # Add affiliation and make the user verified
+        db.execute('UPDATE users SET affiliated_with = ?, is_verified = 1 WHERE id = ?',
+                    (g.user['id'], user_id))
+        db.commit()
+        flash(f'@{target["username"]} is now affiliated with you!', 'success')
+
+    return redirect(url_for('auth.profile', username=target['username']))

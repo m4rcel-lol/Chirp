@@ -16,9 +16,12 @@ def index():
     notifications = db.execute('''
         SELECT n.*, u.username as actor_name, u.display_name as actor_display,
                u.profile_pic as actor_pic, u.is_verified as actor_verified,
+               u.is_corp_verified as actor_corp_verified, u.affiliated_with as actor_affiliated_with,
+               corp.profile_pic as actor_corp_profile_pic,
                p.content as post_content
         FROM notifications n
         LEFT JOIN users u ON n.actor_id = u.id
+        LEFT JOIN users corp ON u.affiliated_with = corp.id
         LEFT JOIN posts p ON n.post_id = p.id
         WHERE n.user_id = ?
         ORDER BY n.created_at DESC

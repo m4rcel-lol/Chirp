@@ -2,6 +2,7 @@
 {% block title %}Messages - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container">
     <div class="page-header">
         <h2>Messages</h2>
@@ -21,7 +22,7 @@
             <div class="conv-info">
                 <div class="conv-header">
                     <span class="conv-names">
-                        {% for member in conv.members %}{{ member.display_name }}{% if not loop.last %}, {% endif %}{% endfor %}
+                        {% for member in conv.members %}{{ member.display_name }}{{ verification_badges(member) }}{% if not loop.last %}, {% endif %}{% endfor %}
                     </span>
                     <span class="conv-time">{{ conv.last_message_at[:10] if conv.last_message_at else '' }}</span>
                 </div>

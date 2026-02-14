@@ -18,6 +18,7 @@
 </head>
 <body>
     {% from "components/icons.html" import icon %}
+    {% from "components/badges.html" import verification_badges %}
     {% if current_user %}
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -77,9 +78,11 @@
         </div>
         <div class="sidebar-profile">
             <a href="{{ url_for('auth.profile', username=current_user.username) }}" class="profile-link">
-                <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="Avatar" class="avatar-sm">
+                <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="Avatar" class="avatar-sm{% if current_user.is_corp_verified %} corp-avatar{% endif %}">
                 <div class="profile-info">
-                    <span class="display-name">{{ current_user.display_name }}</span>
+                    <span class="display-name">{{ current_user.display_name }}
+                        {{ verification_badges(current_user) }}
+                    </span>
                     <span class="username">@{{ current_user.username }}</span>
                 </div>
             </a>

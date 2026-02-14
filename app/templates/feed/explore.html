@@ -2,6 +2,7 @@
 {% block title %}Explore - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "components/badges.html" import verification_badges %}
 <div class="page-container">
     <div class="page-header">
         <h2>Explore</h2>
@@ -42,13 +43,11 @@
             {% for user in suggestions %}
             <div class="suggestion-card">
                 <a href="{{ url_for('auth.profile', username=user.username) }}" class="suggestion-info">
-                    <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+                    <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar{% if user.is_corp_verified %} corp-avatar{% endif %}">
                     <div>
                         <span class="display-name">
                             {{ user.display_name }}
-                            {% if user.is_verified %}
-                            {{ icon('verified', 'verified-badge') }}
-                            {% endif %}
+                            {{ verification_badges(user) }}
                         </span>
                         <span class="username">@{{ user.username }}</span>
                     </div>

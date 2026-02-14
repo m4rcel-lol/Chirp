@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - SECRET_KEY=${SECRET_KEY}
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - DATABASE_PATH=${DATABASE_PATH:-/app/database/chirp.db}
+      - MAX_IMAGE_SIZE=${MAX_IMAGE_SIZE:-10485760}
+      - MAX_VIDEO_SIZE=${MAX_VIDEO_SIZE:-104857600}
+      - ENABLE_REGISTRATION=${ENABLE_REGISTRATION:-true}
+      - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-false}
+      - ENABLE_COMMUNITY_NOTES=${ENABLE_COMMUNITY_NOTES:-true}
+      - SESSION_LIFETIME=${SESSION_LIFETIME:-7200}
+    volumes:
+      - ./app/database:/app/database
+      - ./uploads:/app/uploads
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./uploads:/app/uploads:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    restart: unless-stopped

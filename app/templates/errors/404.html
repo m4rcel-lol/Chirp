@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}404 - Page Not Found{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="error-page">
-    <span class="material-symbols-rounded error-icon">search_off</span>
+    {{ icon('search_off', 'error-icon') }}
     <h1>404</h1>
     <p>This page doesn't exist. Maybe it flew away? 🐦</p>
     <a href="{{ url_for('feed.home') if current_user else url_for('auth.login') }}" class="btn btn-primary">Go Home</a>

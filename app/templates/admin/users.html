@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}User Management - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header"><h2>User Management</h2></div>
     <div class="admin-nav">
@@ -12,7 +13,7 @@
     </div>
     <form action="{{ url_for('admin.users') }}" method="GET" class="search-bar">
         <div class="search-input-wrapper">
-            <span class="material-symbols-rounded">search</span>
+            {{ icon('search') }}
             <input type="text" name="q" value="{{ query }}" placeholder="Search users..." class="search-input">
         </div>
     </form>
@@ -24,7 +25,7 @@
                 <div>
                     <a href="{{ url_for('admin.user_detail', user_id=user.id) }}"><strong>{{ user.display_name }}</strong></a>
                     <span class="username">@{{ user.username }}</span>
-                    {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                    {% if user.is_verified %}{{ icon('verified', 'verified-badge') }}{% endif %}
                     {% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}
                     {% if user.is_suspended %}<span class="badge badge-danger">Suspended</span>{% endif %}
                 </div>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Bookmarks - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Bookmarks</h2>
@@ -12,7 +13,7 @@
         {{ render_post(post) }}
         {% else %}
         <div class="empty-state">
-            <span class="material-symbols-rounded">bookmark_border</span>
+            {{ icon('bookmark_border') }}
             <p>No bookmarks yet. Save chirps for later!</p>
         </div>
         {% endfor %}

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Create Announcement - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ url_for('admin.announcements') }}" class="btn-icon"><span class="material-symbols-rounded">arrow_back</span></a>
+        <a href="{{ url_for('admin.announcements') }}" class="btn-icon">{{ icon('arrow_back') }}</a>
         <h2>Create Announcement</h2>
     </div>
     <form method="POST" class="settings-form">

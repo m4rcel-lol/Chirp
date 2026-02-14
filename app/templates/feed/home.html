@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Home - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Home</h2>
@@ -16,7 +17,7 @@
         <form method="POST" action="{{ url_for('feed.dismiss_announcement', ann_id=ann.id) }}" class="inline-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button type="submit" class="btn-icon" title="Dismiss">
-                <span class="material-symbols-rounded">close</span>
+                {{ icon('close') }}
             </button>
         </form>
     </div>
@@ -33,7 +34,7 @@
                     <div class="compose-toolbar">
                         <div class="compose-options">
                             <label class="btn-icon" title="Add images">
-                                <span class="material-symbols-rounded">image</span>
+                                {{ icon('image') }}
                                 <input type="file" name="media" multiple accept="image/*" hidden>
                             </label>
                         </div>
@@ -51,7 +52,7 @@
         {{ render_post(post) }}
         {% else %}
         <div class="empty-state">
-            <span class="material-symbols-rounded">group_add</span>
+            {{ icon('group_add') }}
             <h3>Welcome to {{ site_settings.get('site_name', 'Chirp') }}!</h3>
             <p>Follow some people to see their chirps here, or <a href="{{ url_for('feed.explore') }}">explore</a> what's trending.</p>
         </div>

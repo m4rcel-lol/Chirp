@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Login - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="auth-container">
     <div class="auth-card">
         <div class="auth-header">
-            <span class="material-symbols-rounded auth-logo">flutter</span>
+            {{ icon('flutter', 'auth-logo', 48) }}
             <h1>Welcome back</h1>
             <p>Sign in to {{ site_settings.get('site_name', 'Chirp') }}</p>
         </div>

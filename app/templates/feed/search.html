@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Search{% if query %}: {{ query }}{% endif %} - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Search</h2>
@@ -9,7 +10,7 @@
     <div class="search-bar">
         <form action="{{ url_for('feed.search') }}" method="GET">
             <div class="search-input-wrapper">
-                <span class="material-symbols-rounded">search</span>
+                {{ icon('search') }}
                 <input type="text" name="q" value="{{ query }}" placeholder="Search..." class="search-input" autofocus>
                 <input type="hidden" name="type" value="{{ search_type }}">
             </div>
@@ -31,7 +32,7 @@
                     <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
                     <div>
                         <span class="display-name">{{ user.display_name }}
-                            {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                            {% if user.is_verified %}{{ icon('verified', 'verified-badge') }}{% endif %}
                         </span>
                         <span class="username">@{{ user.username }}</span>
                         {% if user.bio %}<p class="user-bio-preview">{{ user.bio[:100] }}</p>{% endif %}

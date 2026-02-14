@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Explore - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Explore</h2>
@@ -9,7 +10,7 @@
     <div class="search-bar">
         <form action="{{ url_for('feed.search') }}" method="GET">
             <div class="search-input-wrapper">
-                <span class="material-symbols-rounded">search</span>
+                {{ icon('search') }}
                 <input type="text" name="q" placeholder="Search Chirp..." class="search-input">
             </div>
         </form>
@@ -46,7 +47,7 @@
                         <span class="display-name">
                             {{ user.display_name }}
                             {% if user.is_verified %}
-                            <span class="material-symbols-rounded verified-badge">verified</span>
+                            {{ icon('verified', 'verified-badge') }}
                             {% endif %}
                         </span>
                         <span class="username">@{{ user.username }}</span>

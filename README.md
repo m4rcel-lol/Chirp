@@ -51,6 +51,28 @@ Guided setup wizard to create the admin account and configure your instance.
 
 ![Setup](https://github.com/user-attachments/assets/e672b75a-f472-465d-83f3-f5a20d9f70c6)
 
+### Verification Badges
+Verified badges are displayed throughout the platform — in posts, profiles, notifications, messages, sidebar, and search results.
+
+![Verified Badges on Home Feed](https://github.com/user-attachments/assets/8fa9755a-9a49-4747-9697-4aab17304ba5)
+
+### Corporation Verification
+Corporation-verified users get a distinct badge and a square profile picture. Admins can grant or revoke corporation verification from the user detail page.
+
+![Corporation Verified Profile](https://github.com/user-attachments/assets/cf9b4c34-e778-4055-a544-2153e206058a)
+
+![Admin Corp Verification](https://github.com/user-attachments/assets/b37f7dd3-fef6-47fd-a994-4d7ac2703cce)
+
+### Affiliation System
+Corporation-verified users can affiliate other users, granting them a verified badge with the corporation's profile picture displayed alongside it. The affiliate button appears on profile pages when viewed by a corp-verified user.
+
+![Affiliate Button](https://github.com/user-attachments/assets/e4b20eda-a66a-4783-ac8e-3491aaecc4ac)
+
+### Explore with Badges
+All verification types are visible in the explore page suggestions and popular chirps.
+
+![Explore with Badges](https://github.com/user-attachments/assets/b9b66854-bebc-4c03-a513-250167b5a485)
+
 ## Features
 
 ### Core
@@ -58,6 +80,7 @@ Guided setup wizard to create the admin account and configure your instance.
 - **Posts (Chirps)**: Text posts (500 chars), image attachments, polls, edit history (30 min window), hashtags, @mentions
 - **Interactions**: Like, rechirp (retweet), reply, quote chirp, bookmark, share
 - **Feed**: Chronological home timeline, explore page with trending hashtags/posts, search (posts, users, hashtags)
+- **Verification**: User verification badges, corporation verification (square avatars, distinct badge), and affiliation system (corp users can affiliate others, showing the corp's profile picture next to the badge)
 
 ### Community & Moderation
 - **Community Notes**: Any user can propose notes on posts with sources; auto-approved at 3+ helpful ratings
@@ -67,7 +90,7 @@ Guided setup wizard to create the admin account and configure your instance.
 
 ### Administration
 - **Dashboard**: Real-time stats (users, posts, reports, registrations)
-- **User Management**: Search, verify, suspend, ban, promote moderators, delete users
+- **User Management**: Search, verify, suspend, ban, promote moderators, delete users, grant corporation verification
 - **Content Moderation**: Reports queue, staff notes, community notes oversight
 - **Site Settings**: Customizable site name, description, theme color, registration mode
 - **Audit Log**: Full admin action trail

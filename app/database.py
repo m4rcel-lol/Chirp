@@ -3,9 +3,19 @@ import os
 
 DATABASE_PATH = os.environ.get('DATABASE_PATH', 'database/chirp.db')
 
+# Shared connection for in-memory databases (used in testing)
+_memory_db = None
+
 
 def get_db():
     """Get a database connection."""
+    global _memory_db
+    if DATABASE_PATH == ':memory:':
+        if _memory_db is None:
+            _memory_db = sqlite3.connect(':memory:', check_same_thread=False)
+            _memory_db.row_factory = sqlite3.Row
+            _memory_db.execute("PRAGMA foreign_keys=ON")
+        return _memory_db
     db = sqlite3.connect(DATABASE_PATH)
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA journal_mode=WAL")
@@ -15,7 +25,7 @@ def get_db():
 
 def close_db(db):
     """Close a database connection."""
-    if db is not None:
+    if db is not None and DATABASE_PATH != ':memory:':
         db.close()
 
 

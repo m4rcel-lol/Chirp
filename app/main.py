@@ -96,8 +96,7 @@ def before_request():
 @app.teardown_appcontext
 def teardown_db(exception):
     db = g.pop('db', None)
-    if db is not None:
-        db.close()
+    close_db(db)
 
 
 @app.after_request
@@ -126,7 +125,7 @@ def inject_globals():
         'site_settings': g.site_settings,
         'unread_notifications': unread_count,
         'csrf_token': session.get('csrf_token', ''),
-        'now': datetime.utcnow(),
+        'now': datetime.now(),
     }
 
 

@@ -130,7 +130,7 @@ def compose():
                     options.append(opt)
             if len(options) >= 2:
                 duration_hours = int(request.form.get('poll_duration', 24))
-                expires = datetime.utcnow() + timedelta(hours=duration_hours)
+                expires = datetime.now() + timedelta(hours=duration_hours)
                 # Create post first, then poll
                 pass  # handled below
 
@@ -155,7 +155,7 @@ def compose():
                     options.append(opt)
             if len(options) >= 2:
                 duration_hours = int(request.form.get('poll_duration', 24))
-                expires = datetime.utcnow() + timedelta(hours=duration_hours)
+                expires = datetime.now() + timedelta(hours=duration_hours)
                 db.execute(
                     'INSERT INTO polls (post_id, options, expires_at) VALUES (?, ?, ?)',
                     (post_id, json.dumps(options), expires.isoformat())
@@ -334,7 +334,7 @@ def edit_post(post_id):
 
     # Check 30-minute edit window
     created = datetime.fromisoformat(post['created_at'])
-    if datetime.utcnow() - created > timedelta(minutes=30):
+    if datetime.now() - created > timedelta(minutes=30):
         flash('Posts can only be edited within 30 minutes.', 'error')
         return redirect(url_for('posts.view_post', post_id=post_id))
 
@@ -347,7 +347,7 @@ def edit_post(post_id):
     history = json.loads(post['edit_history'] or '[]')
     history.append({
         'content': post['content'],
-        'edited_at': datetime.utcnow().isoformat()
+        'edited_at': datetime.now().isoformat()
     })
 
     db.execute(

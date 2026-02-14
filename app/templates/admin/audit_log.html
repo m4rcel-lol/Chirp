@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Audit Log - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>Audit Log</h2></div>
+    <div class="admin-table">
+        {% for log in logs %}
+        <div class="admin-row">
+            <span>@{{ log.admin_name }}</span>
+            <span><strong>{{ log.action }}</strong></span>
+            {% if log.target_type %}<span>{{ log.target_type }} #{{ log.target_id }}</span>{% endif %}
+            {% if log.details %}<span>{{ log.details[:50] }}</span>{% endif %}
+            <span>{{ log.created_at }}</span>
+        </div>
+        {% else %}
+        <div class="empty-state"><p>No audit log entries.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

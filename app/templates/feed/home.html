@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Home - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Home</h2>
+    </div>
+
+    <!-- Announcements -->
+    {% for ann in announcements %}
+    <div class="announcement announcement-{{ ann.type }}">
+        <div class="announcement-content">
+            <strong>{{ ann.title }}</strong>
+            <p>{{ ann.content }}</p>
+        </div>
+        <form method="POST" action="{{ url_for('feed.dismiss_announcement', ann_id=ann.id) }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="btn-icon" title="Dismiss">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <!-- Quick compose -->
+    <div class="quick-compose">
+        <form method="POST" action="{{ url_for('posts.compose') }}" enctype="multipart/form-data" class="compose-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="compose-area">
+                <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+                <div class="compose-input">
+                    <textarea name="content" placeholder="What's happening?" maxlength="500" rows="3" id="home-compose"></textarea>
+                    <div class="compose-toolbar">
+                        <div class="compose-options">
+                            <label class="btn-icon" title="Add images">
+                                <span class="material-symbols-rounded">image</span>
+                                <input type="file" name="media" multiple accept="image/*" hidden>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Chirp</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Feed -->
+    <div class="posts-list">
+        {% from "components/post_card.html" import render_post %}
+        {% for post in posts %}
+        {{ render_post(post) }}
+        {% else %}
+        <div class="empty-state">
+            <span class="material-symbols-rounded">group_add</span>
+            <h3>Welcome to {{ site_settings.get('site_name', 'Chirp') }}!</h3>
+            <p>Follow some people to see their chirps here, or <a href="{{ url_for('feed.explore') }}">explore</a> what's trending.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if posts|length >= 20 %}
+    <div class="load-more">
+        <a href="?page={{ page + 1 }}" class="btn btn-outlined">Load more</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

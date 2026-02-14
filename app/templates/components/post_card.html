@@ -1,0 +1,99 @@
+{% macro render_post(post, show_actions=true) %}
+<article class="post-card" id="post-{{ post.id }}">
+    {% if post.get('staff_notes') %}
+    {% for note in post.staff_notes %}
+    <div class="staff-note staff-note-{{ note.note_type }}">
+        <span class="material-symbols-rounded">shield</span>
+        <strong>Staff Note ({{ note.note_type }}):</strong> {{ note.content }}
+        <small>— {{ note.display_name }}</small>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="post-header">
+        <a href="{{ url_for('auth.profile', username=post.username) }}" class="post-author">
+            <img src="{{ post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+            <div class="author-info">
+                <span class="display-name">
+                    {{ post.display_name }}
+                    {% if post.is_verified %}
+                    <span class="material-symbols-rounded verified-badge">verified</span>
+                    {% endif %}
+                </span>
+                <span class="username">@{{ post.username }}</span>
+            </div>
+        </a>
+        <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="post-time">
+            {{ post.created_at[:16] }}
+        </a>
+    </div>
+
+    <div class="post-content">
+        {{ post.content | replace('\n', '<br>') | safe }}
+        {% if post.is_edited %}
+        <span class="edited-label">(edited)</span>
+        {% endif %}
+    </div>
+
+    {% if post.get('quoted_post') %}
+    <div class="quoted-post">
+        <div class="post-header">
+            <a href="{{ url_for('auth.profile', username=post.quoted_post.username) }}" class="post-author">
+                <img src="{{ post.quoted_post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+                <span class="display-name">{{ post.quoted_post.display_name }}</span>
+                <span class="username">@{{ post.quoted_post.username }}</span>
+            </a>
+        </div>
+        <div class="post-content">{{ post.quoted_post.content }}</div>
+    </div>
+    {% endif %}
+
+    {% if post.get('community_notes') %}
+    {% for note in post.community_notes %}
+    <div class="community-note">
+        <span class="material-symbols-rounded">rate_review</span>
+        <div class="note-content">
+            <strong>Community Note:</strong> {{ note.content }}
+            <small class="note-meta">{{ note.helpful_count }} found helpful · {{ note.category }}</small>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if show_actions %}
+    <div class="post-actions">
+        <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="action-btn">
+            <span class="material-symbols-rounded">chat_bubble</span>
+            <span>{{ post.reply_count or 0 }}</span>
+        </a>
+
+        <form method="POST" action="{{ url_for('posts.repost', post_id=post.id) }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="action-btn repost-btn">
+                <span class="material-symbols-rounded">repeat</span>
+                <span>{{ post.repost_count or 0 }}</span>
+            </button>
+        </form>
+
+        <form method="POST" action="{{ url_for('posts.like_post', post_id=post.id) }}" class="inline-form like-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="action-btn like-btn {% if post.is_liked %}liked{% endif %}">
+                <span class="material-symbols-rounded">{{ 'favorite' if post.is_liked else 'favorite_border' }}</span>
+                <span>{{ post.like_count or 0 }}</span>
+            </button>
+        </form>
+
+        <form method="POST" action="{{ url_for('posts.bookmark_post', post_id=post.id) }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit" class="action-btn bookmark-btn {% if post.is_bookmarked %}bookmarked{% endif %}">
+                <span class="material-symbols-rounded">{{ 'bookmark' if post.is_bookmarked else 'bookmark_border' }}</span>
+            </button>
+        </form>
+
+        <button class="action-btn share-btn" onclick="sharePost({{ post.id }})">
+            <span class="material-symbols-rounded">share</span>
+        </button>
+    </div>
+    {% endif %}
+</article>
+{% endmacro %}

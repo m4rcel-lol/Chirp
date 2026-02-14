@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Bookmarks - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Bookmarks</h2>
+    </div>
+
+    <div class="posts-list">
+        {% from "components/post_card.html" import render_post %}
+        {% for post in posts %}
+        {{ render_post(post) }}
+        {% else %}
+        <div class="empty-state">
+            <span class="material-symbols-rounded">bookmark_border</span>
+            <p>No bookmarks yet. Save chirps for later!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

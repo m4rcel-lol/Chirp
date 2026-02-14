@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Admin Dashboard</h2>
+    </div>
+
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab active">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
+        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="material-symbols-rounded">group</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.total_users }}</span>
+                <span class="stat-label">Total Users</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="material-symbols-rounded">chat</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.total_posts }}</span>
+                <span class="stat-label">Total Posts</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="material-symbols-rounded">trending_up</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.posts_today }}</span>
+                <span class="stat-label">Posts Today</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="material-symbols-rounded">flag</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.pending_reports }}</span>
+                <span class="stat-label">Pending Reports</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <span class="material-symbols-rounded">person_add</span>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.new_users_today }}</span>
+                <span class="stat-label">New Users Today</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-sections">
+        <section class="admin-section">
+            <h3>Recent Registrations</h3>
+            <div class="admin-table">
+                {% for user in recent_users %}
+                <div class="admin-row">
+                    <a href="{{ url_for('admin.user_detail', user_id=user.id) }}">
+                        <strong>@{{ user.username }}</strong>
+                    </a>
+                    <span>{{ user.email }}</span>
+                    <span>{{ user.created_at[:10] }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if recent_reports %}
+        <section class="admin-section">
+            <h3>Pending Reports</h3>
+            <div class="admin-table">
+                {% for report in recent_reports %}
+                <div class="admin-row">
+                    <span>By @{{ report.reporter_name }}</span>
+                    <span>{{ report.reason }}</span>
+                    <a href="{{ url_for('admin.reports') }}" class="btn btn-sm btn-outlined">Review</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

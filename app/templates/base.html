@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{ current_user.theme if current_user else 'auto' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_settings.get('site_name', 'Chirp') }}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --md-sys-color-primary: {{ site_settings.get('theme_color', '#6750A4') }};
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% if current_user %}
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ url_for('feed.home') }}" class="logo">
+                <span class="material-symbols-rounded">flutter</span>
+                <span class="logo-text">{{ site_settings.get('site_name', 'Chirp') }}</span>
+            </a>
+        </div>
+        <div class="sidebar-nav">
+            <a href="{{ url_for('feed.home') }}" class="nav-item {% if request.path == '/home' %}active{% endif %}">
+                <span class="material-symbols-rounded">home</span>
+                <span>Home</span>
+            </a>
+            <a href="{{ url_for('feed.explore') }}" class="nav-item {% if request.path == '/explore' %}active{% endif %}">
+                <span class="material-symbols-rounded">explore</span>
+                <span>Explore</span>
+            </a>
+            <a href="{{ url_for('feed.search') }}" class="nav-item {% if request.path == '/search' %}active{% endif %}">
+                <span class="material-symbols-rounded">search</span>
+                <span>Search</span>
+            </a>
+            <a href="{{ url_for('notifications.index') }}" class="nav-item {% if '/notifications' in request.path %}active{% endif %}">
+                <span class="material-symbols-rounded">notifications</span>
+                <span>Notifications</span>
+                {% if unread_notifications > 0 %}
+                <span class="badge">{{ unread_notifications }}</span>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('messages.inbox') }}" class="nav-item {% if '/messages' in request.path %}active{% endif %}">
+                <span class="material-symbols-rounded">mail</span>
+                <span>Messages</span>
+            </a>
+            <a href="{{ url_for('feed.bookmarks') }}" class="nav-item {% if request.path == '/bookmarks' %}active{% endif %}">
+                <span class="material-symbols-rounded">bookmark</span>
+                <span>Bookmarks</span>
+            </a>
+            <a href="{{ url_for('auth.profile', username=current_user.username) }}" class="nav-item {% if request.path == '/user/' + current_user.username %}active{% endif %}">
+                <span class="material-symbols-rounded">person</span>
+                <span>Profile</span>
+            </a>
+            {% if current_user.is_admin or current_user.is_moderator %}
+            <a href="{{ url_for('admin.dashboard') }}" class="nav-item {% if '/admin' in request.path %}active{% endif %}">
+                <span class="material-symbols-rounded">admin_panel_settings</span>
+                <span>Admin</span>
+            </a>
+            {% endif %}
+            <a href="{{ url_for('auth.settings') }}" class="nav-item {% if request.path == '/settings' %}active{% endif %}">
+                <span class="material-symbols-rounded">settings</span>
+                <span>Settings</span>
+            </a>
+        </div>
+        <div class="sidebar-compose">
+            <a href="{{ url_for('posts.compose') }}" class="btn btn-primary btn-compose">
+                <span class="material-symbols-rounded">edit</span>
+                <span>Chirp</span>
+            </a>
+        </div>
+        <div class="sidebar-profile">
+            <a href="{{ url_for('auth.profile', username=current_user.username) }}" class="profile-link">
+                <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="Avatar" class="avatar-sm">
+                <div class="profile-info">
+                    <span class="display-name">{{ current_user.display_name }}</span>
+                    <span class="username">@{{ current_user.username }}</span>
+                </div>
+            </a>
+            <form method="POST" action="{{ url_for('auth.logout') }}" class="logout-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn-icon" title="Logout">
+                    <span class="material-symbols-rounded">logout</span>
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Mobile bottom nav -->
+    <nav class="bottom-nav">
+        <a href="{{ url_for('feed.home') }}" class="bottom-nav-item {% if request.path == '/home' %}active{% endif %}">
+            <span class="material-symbols-rounded">home</span>
+        </a>
+        <a href="{{ url_for('feed.explore') }}" class="bottom-nav-item {% if request.path == '/explore' %}active{% endif %}">
+            <span class="material-symbols-rounded">explore</span>
+        </a>
+        <a href="{{ url_for('posts.compose') }}" class="bottom-nav-item compose-btn">
+            <span class="material-symbols-rounded">add_circle</span>
+        </a>
+        <a href="{{ url_for('notifications.index') }}" class="bottom-nav-item {% if '/notifications' in request.path %}active{% endif %}">
+            <span class="material-symbols-rounded">notifications</span>
+            {% if unread_notifications > 0 %}<span class="badge-dot"></span>{% endif %}
+        </a>
+        <a href="{{ url_for('messages.inbox') }}" class="bottom-nav-item {% if '/messages' in request.path %}active{% endif %}">
+            <span class="material-symbols-rounded">mail</span>
+        </a>
+    </nav>
+    {% endif %}
+
+    <main class="main-content {% if not current_user %}auth-layout{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="snackbar snackbar-{{ category }}" onclick="this.remove()">
+                <span class="material-symbols-rounded">
+                    {% if category == 'success' %}check_circle
+                    {% elif category == 'error' %}error
+                    {% elif category == 'warning' %}warning
+                    {% else %}info{% endif %}
+                </span>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

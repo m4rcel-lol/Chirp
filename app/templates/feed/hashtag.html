@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}#{{ tag }} - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="javascript:history.back()" class="btn-icon">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </a>
+        <h2>#{{ tag }}</h2>
+    </div>
+
+    <div class="posts-list">
+        {% from "components/post_card.html" import render_post %}
+        {% for post in posts %}
+        {{ render_post(post) }}
+        {% else %}
+        <div class="empty-state">
+            <p>No chirps with #{{ tag }} yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

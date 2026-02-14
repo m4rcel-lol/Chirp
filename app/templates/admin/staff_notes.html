@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Staff Notes - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>Staff Notes</h2></div>
+    <div class="admin-table">
+        {% for note in notes %}
+        <div class="admin-row">
+            <div>
+                <span class="badge badge-{{ note.note_type }}">{{ note.note_type }}</span>
+                <strong>{{ note.content }}</strong>
+                <p class="text-muted">On post: {{ note.post_content[:80] }}</p>
+                <small>By @{{ note.author_name }} · {{ note.created_at[:10] }}</small>
+            </div>
+            <a href="{{ url_for('posts.view_post', post_id=note.post_id) }}" class="btn btn-sm btn-outlined">View Post</a>
+        </div>
+        {% else %}
+        <div class="empty-state"><p>No staff notes yet.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

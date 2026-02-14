@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Notifications - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Notifications</h2>
+    </div>
+
+    <div class="notifications-list">
+        {% for notif in notifications %}
+        <div class="notification-item {% if not notif.is_read %}unread{% endif %}">
+            {% if notif.actor_pic %}
+            <img src="{{ notif.actor_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+            {% endif %}
+            <div class="notif-content">
+                <span class="material-symbols-rounded notif-icon">
+                    {% if notif.type == 'like' %}favorite
+                    {% elif notif.type == 'follow' %}person_add
+                    {% elif notif.type == 'reply' %}reply
+                    {% elif notif.type == 'repost' %}repeat
+                    {% elif notif.type == 'mention' %}alternate_email
+                    {% elif notif.type == 'message' %}mail
+                    {% else %}notifications{% endif %}
+                </span>
+                <div>
+                    {% if notif.actor_name %}
+                    <a href="{{ url_for('auth.profile', username=notif.actor_name) }}"><strong>{{ notif.actor_display or notif.actor_name }}</strong></a>
+                    {% endif %}
+                    {% if notif.type == 'like' %}liked your chirp
+                    {% elif notif.type == 'follow' %}followed you
+                    {% elif notif.type == 'reply' %}replied to your chirp
+                    {% elif notif.type == 'repost' %}rechirped your chirp
+                    {% elif notif.type == 'mention' %}mentioned you
+                    {% elif notif.type == 'message' %}{{ notif.message }}
+                    {% else %}{{ notif.message }}{% endif %}
+                    {% if notif.post_content %}
+                    <p class="notif-post-preview">{{ notif.post_content[:80] }}</p>
+                    {% endif %}
+                    <small class="notif-time">{{ notif.created_at[:16] }}</small>
+                </div>
+            </div>
+            {% if notif.post_id %}
+            <a href="{{ url_for('posts.view_post', post_id=notif.post_id) }}" class="notif-link">
+                <span class="material-symbols-rounded">chevron_right</span>
+            </a>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <span class="material-symbols-rounded">notifications_off</span>
+            <p>No notifications yet</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Search{% if query %}: {{ query }}{% endif %} - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Search</h2>
+    </div>
+
+    <div class="search-bar">
+        <form action="{{ url_for('feed.search') }}" method="GET">
+            <div class="search-input-wrapper">
+                <span class="material-symbols-rounded">search</span>
+                <input type="text" name="q" value="{{ query }}" placeholder="Search..." class="search-input" autofocus>
+                <input type="hidden" name="type" value="{{ search_type }}">
+            </div>
+        </form>
+    </div>
+
+    {% if query %}
+    <div class="search-tabs">
+        <a href="{{ url_for('feed.search', q=query, type='posts') }}" class="tab {% if search_type == 'posts' %}active{% endif %}">Posts</a>
+        <a href="{{ url_for('feed.search', q=query, type='users') }}" class="tab {% if search_type == 'users' %}active{% endif %}">People</a>
+        <a href="{{ url_for('feed.search', q=query, type='hashtags') }}" class="tab {% if search_type == 'hashtags' %}active{% endif %}">Hashtags</a>
+    </div>
+
+    <div class="search-results">
+        {% if search_type == 'users' %}
+            {% for user in results %}
+            <div class="suggestion-card">
+                <a href="{{ url_for('auth.profile', username=user.username) }}" class="suggestion-info">
+                    <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+                    <div>
+                        <span class="display-name">{{ user.display_name }}
+                            {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                        </span>
+                        <span class="username">@{{ user.username }}</span>
+                        {% if user.bio %}<p class="user-bio-preview">{{ user.bio[:100] }}</p>{% endif %}
+                    </div>
+                </a>
+            </div>
+            {% else %}
+            <div class="empty-state"><p>No users found.</p></div>
+            {% endfor %}
+
+        {% elif search_type == 'hashtags' %}
+            {% for tag in results %}
+            <a href="{{ url_for('feed.hashtag', tag=tag.tag) }}" class="trending-item">
+                <span class="trending-tag">#{{ tag.tag }}</span>
+                <span class="trending-count">{{ tag.recent_count }} chirps</span>
+            </a>
+            {% else %}
+            <div class="empty-state"><p>No hashtags found.</p></div>
+            {% endfor %}
+
+        {% else %}
+            {% from "components/post_card.html" import render_post %}
+            {% for post in results %}
+            {{ render_post(post) }}
+            {% else %}
+            <div class="empty-state"><p>No posts found.</p></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

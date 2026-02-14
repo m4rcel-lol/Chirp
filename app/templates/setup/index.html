@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Setup - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card setup-card">
+        <div class="auth-header">
+            <span class="material-symbols-rounded auth-logo">flutter</span>
+            <h1>Welcome to Chirp</h1>
+            <p>Let's get your instance set up</p>
+        </div>
+
+        {% if step == 1 %}
+        <h3>Step 1: Create Admin Account</h3>
+        <form method="POST" class="auth-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="step" value="1">
+            <div class="form-field">
+                <label for="username">Admin Username</label>
+                <input type="text" id="username" name="username" required minlength="3" class="md-input">
+            </div>
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required class="md-input">
+            </div>
+            <div class="form-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="8" class="md-input">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Create Admin Account</button>
+        </form>
+
+        {% elif step == 2 %}
+        <h3>Step 2: Configure Your Instance</h3>
+        <form method="POST" class="auth-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="step" value="2">
+            <div class="form-field">
+                <label for="site_name">Site Name</label>
+                <input type="text" id="site_name" name="site_name" value="Chirp" class="md-input">
+            </div>
+            <div class="form-field">
+                <label for="site_description">Site Description</label>
+                <textarea id="site_description" name="site_description" rows="2" class="md-input" placeholder="A modern social platform"></textarea>
+            </div>
+            <div class="form-field">
+                <label for="theme_color">Theme Color</label>
+                <input type="color" id="theme_color" name="theme_color" value="#6750A4" class="color-picker">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Finish Setup</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

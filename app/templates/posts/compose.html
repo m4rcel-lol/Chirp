@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Compose - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="{{ url_for('feed.home') }}" class="btn-icon">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </a>
+        <h2>New Chirp</h2>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="compose-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        {% if quoted_post %}
+        <input type="hidden" name="quote_id" value="{{ quoted_post.id }}">
+        {% endif %}
+
+        <div class="compose-area">
+            <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+            <div class="compose-input">
+                <textarea name="content" placeholder="What's happening?" maxlength="500"
+                          rows="4" autofocus id="compose-textarea"></textarea>
+                <div class="char-count"><span id="char-count">0</span>/500</div>
+            </div>
+        </div>
+
+        {% if quoted_post %}
+        <div class="quoted-post">
+            <div class="post-header">
+                <img src="{{ quoted_post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+                <span class="display-name">{{ quoted_post.display_name }}</span>
+                <span class="username">@{{ quoted_post.username }}</span>
+            </div>
+            <p>{{ quoted_post.content }}</p>
+        </div>
+        {% endif %}
+
+        <div class="compose-toolbar">
+            <div class="compose-options">
+                <label class="btn-icon" title="Add images">
+                    <span class="material-symbols-rounded">image</span>
+                    <input type="file" name="media" multiple accept="image/*" hidden>
+                </label>
+                <button type="button" class="btn-icon" title="Add poll" onclick="togglePoll()">
+                    <span class="material-symbols-rounded">ballot</span>
+                </button>
+            </div>
+            <button type="submit" class="btn btn-primary">Chirp</button>
+        </div>
+
+        <div id="poll-section" style="display:none" class="poll-form">
+            <div class="form-field">
+                <input type="text" name="poll_option_0" placeholder="Option 1" class="md-input">
+            </div>
+            <div class="form-field">
+                <input type="text" name="poll_option_1" placeholder="Option 2" class="md-input">
+            </div>
+            <div class="form-field">
+                <input type="text" name="poll_option_2" placeholder="Option 3 (optional)" class="md-input">
+            </div>
+            <div class="form-field">
+                <input type="text" name="poll_option_3" placeholder="Option 4 (optional)" class="md-input">
+            </div>
+            <div class="form-field">
+                <label>Duration (hours)</label>
+                <select name="poll_duration" class="md-input">
+                    <option value="1">1 hour</option>
+                    <option value="6">6 hours</option>
+                    <option value="24" selected>24 hours</option>
+                    <option value="72">3 days</option>
+                    <option value="168">7 days</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('compose-textarea').addEventListener('input', function() {
+    document.getElementById('char-count').textContent = this.value.length;
+});
+function togglePoll() {
+    const s = document.getElementById('poll-section');
+    s.style.display = s.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+{% endblock %}

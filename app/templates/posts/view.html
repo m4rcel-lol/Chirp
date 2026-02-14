@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% block title %}Post by {{ post.display_name }} - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="javascript:history.back()" class="btn-icon">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </a>
+        <h2>Chirp</h2>
+    </div>
+
+    <!-- Main post -->
+    <article class="post-card post-detail">
+        {% if post.get('staff_notes') %}
+        {% for note in post.staff_notes %}
+        <div class="staff-note staff-note-{{ note.note_type }}">
+            <span class="material-symbols-rounded">shield</span>
+            <strong>Staff Note ({{ note.note_type }}):</strong> {{ note.content }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="post-header">
+            <a href="{{ url_for('auth.profile', username=post.username) }}" class="post-author">
+                <img src="{{ post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+                <div class="author-info">
+                    <span class="display-name">
+                        {{ post.display_name }}
+                        {% if post.is_verified %}
+                        <span class="material-symbols-rounded verified-badge">verified</span>
+                        {% endif %}
+                    </span>
+                    <span class="username">@{{ post.username }}</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="post-content post-content-large">
+            {{ post.content | replace('\n', '<br>') | safe }}
+            {% if post.is_edited %}
+            <span class="edited-label">(edited)</span>
+            {% endif %}
+        </div>
+
+        {% if post.get('quoted_post') %}
+        <div class="quoted-post">
+            <a href="{{ url_for('auth.profile', username=post.quoted_post.username) }}" class="post-author">
+                <img src="{{ post.quoted_post.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+                <span class="display-name">{{ post.quoted_post.display_name }}</span>
+                <span class="username">@{{ post.quoted_post.username }}</span>
+            </a>
+            <p>{{ post.quoted_post.content }}</p>
+        </div>
+        {% endif %}
+
+        {% if poll %}
+        <div class="poll-widget">
+            {% for option in poll.options %}
+            <div class="poll-option">
+                {% if poll.user_voted is not none %}
+                <div class="poll-bar" style="width: {{ (poll.vote_counts[loop.index0] / (poll.total_votes or 1) * 100)|int }}%"></div>
+                <span class="poll-label">{{ option }}</span>
+                <span class="poll-pct">{{ (poll.vote_counts[loop.index0] / (poll.total_votes or 1) * 100)|int }}%</span>
+                {% else %}
+                <form method="POST" action="{{ url_for('posts.vote_poll', poll_id=poll.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="option" value="{{ loop.index0 }}">
+                    <button type="submit" class="poll-vote-btn">{{ option }}</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="poll-meta">{{ poll.total_votes }} votes</div>
+        </div>
+        {% endif %}
+
+        {% if post.get('community_notes') %}
+        {% for note in post.community_notes %}
+        <div class="community-note">
+            <span class="material-symbols-rounded">rate_review</span>
+            <div class="note-content">
+                <strong>Community Note:</strong> {{ note.content }}
+                <small class="note-meta">{{ note.helpful_count }} found helpful · {{ note.category }}</small>
+                {% if current_user %}
+                <div class="note-actions">
+                    <form method="POST" action="{{ url_for('posts.rate_community_note', note_id=note.id) }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="hidden" name="rating" value="helpful">
+                        <button type="submit" class="btn btn-sm">👍 Helpful</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('posts.rate_community_note', note_id=note.id) }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="hidden" name="rating" value="not_helpful">
+                        <button type="submit" class="btn btn-sm">👎 Not Helpful</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="post-timestamp">{{ post.created_at }}</div>
+
+        <div class="post-stats">
+            <span>{{ post.like_count }} Likes</span>
+            <span>{{ post.repost_count }} Rechirps</span>
+            <span>{{ post.reply_count }} Replies</span>
+        </div>
+
+        {% if current_user %}
+        <div class="post-actions">
+            <form method="POST" action="{{ url_for('posts.like_post', post_id=post.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="action-btn like-btn {% if post.is_liked %}liked{% endif %}">
+                    <span class="material-symbols-rounded">{{ 'favorite' if post.is_liked else 'favorite_border' }}</span>
+                    <span>Like</span>
+                </button>
+            </form>
+            <form method="POST" action="{{ url_for('posts.repost', post_id=post.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="action-btn">
+                    <span class="material-symbols-rounded">repeat</span>
+                    <span>Rechirp</span>
+                </button>
+            </form>
+            <a href="{{ url_for('posts.compose', quote=post.id) }}" class="action-btn">
+                <span class="material-symbols-rounded">format_quote</span>
+                <span>Quote</span>
+            </a>
+            <form method="POST" action="{{ url_for('posts.bookmark_post', post_id=post.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="action-btn">
+                    <span class="material-symbols-rounded">{{ 'bookmark' if post.is_bookmarked else 'bookmark_border' }}</span>
+                    <span>Save</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Post owner actions -->
+        {% if current_user.id == post.user_id %}
+        <div class="post-owner-actions">
+            <form method="POST" action="{{ url_for('posts.pin_post', post_id=post.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn btn-sm btn-outlined">
+                    <span class="material-symbols-rounded">push_pin</span> {{ 'Unpin' if post.is_pinned else 'Pin' }}
+                </button>
+            </form>
+            <form method="POST" action="{{ url_for('posts.delete_post', post_id=post.id) }}" class="inline-form"
+                  onsubmit="return confirm('Delete this chirp?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <span class="material-symbols-rounded">delete</span> Delete
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Admin actions -->
+        {% if current_user.is_admin or current_user.is_moderator %}
+        <details class="admin-actions-section">
+            <summary class="btn btn-sm btn-outlined">
+                <span class="material-symbols-rounded">admin_panel_settings</span> Mod Actions
+            </summary>
+            <div class="admin-actions-content">
+                <form method="POST" action="{{ url_for('admin.add_staff_note', post_id=post.id) }}" class="settings-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="form-field">
+                        <select name="note_type" class="md-input">
+                            <option value="info">Info</option>
+                            <option value="warning">Warning</option>
+                            <option value="misleading">Misleading</option>
+                            <option value="investigation">Under Investigation</option>
+                            <option value="violation">Violation</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <textarea name="content" placeholder="Staff note..." class="md-input" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary">Add Staff Note</button>
+                </form>
+
+                {% if current_user.id != post.user_id %}
+                <form method="POST" action="{{ url_for('posts.delete_post', post_id=post.id) }}" class="inline-form"
+                      onsubmit="return confirm('Delete this post as admin?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete Post (Admin)</button>
+                </form>
+                {% endif %}
+            </div>
+        </details>
+        {% endif %}
+
+        <!-- Reply form -->
+        <div class="reply-form-section">
+            <form method="POST" action="{{ url_for('posts.reply', post_id=post.id) }}" enctype="multipart/form-data" class="compose-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="compose-area">
+                    <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+                    <div class="compose-input">
+                        <textarea name="content" placeholder="Post your reply" maxlength="500" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Community note form -->
+        <details class="community-note-form">
+            <summary class="btn btn-sm btn-outlined">
+                <span class="material-symbols-rounded">rate_review</span> Add Community Note
+            </summary>
+            <form method="POST" action="{{ url_for('posts.add_community_note', post_id=post.id) }}" class="settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-field">
+                    <select name="category" class="md-input">
+                        <option value="misleading">Misleading</option>
+                        <option value="missing_context">Missing Context</option>
+                        <option value="satire">Satire</option>
+                        <option value="disputed">Disputed</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <textarea name="content" placeholder="Explain why..." maxlength="280" class="md-input" rows="2" required></textarea>
+                </div>
+                <div class="form-field">
+                    <input type="url" name="source1" placeholder="Source link 1 (required)" class="md-input" required>
+                </div>
+                <div class="form-field">
+                    <input type="url" name="source2" placeholder="Source link 2 (optional)" class="md-input">
+                </div>
+                <div class="form-field">
+                    <input type="url" name="source3" placeholder="Source link 3 (optional)" class="md-input">
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">Submit Note</button>
+            </form>
+        </details>
+
+        {% endif %}
+    </article>
+
+    <!-- Replies -->
+    {% if replies %}
+    <div class="replies-section">
+        <h3>Replies</h3>
+        {% from "components/post_card.html" import render_post %}
+        {% for reply in replies %}
+        {{ render_post(reply) }}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

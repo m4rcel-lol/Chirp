@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}User: {{ user.username }} - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="{{ url_for('admin.users') }}" class="btn-icon"><span class="material-symbols-rounded">arrow_back</span></a>
+        <h2>@{{ user.username }}</h2>
+    </div>
+
+    <div class="settings-card">
+        <div class="user-detail-header">
+            <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-lg">
+            <div>
+                <h3>{{ user.display_name }}
+                    {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                </h3>
+                <p>@{{ user.username }} · {{ user.email }}</p>
+                <p>Joined: {{ user.created_at[:10] }} · {{ post_count }} posts</p>
+                {% if user.is_suspended %}<p class="text-danger">⚠️ Suspended: {{ user.suspend_reason }}</p>{% endif %}
+            </div>
+        </div>
+
+        <div class="admin-actions-grid">
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="verify">
+                <button type="submit" class="btn btn-outlined">{{ 'Remove' if user.is_verified else 'Grant' }} Verification</button>
+            </form>
+
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="make_mod">
+                <button type="submit" class="btn btn-outlined">{{ 'Remove' if user.is_moderator else 'Grant' }} Moderator</button>
+            </form>
+
+            {% if not user.is_suspended %}
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="suspend">
+                <input type="text" name="reason" placeholder="Reason" class="md-input" style="display:inline-block;width:auto">
+                <button type="submit" class="btn btn-danger">Suspend</button>
+            </form>
+            {% else %}
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="unsuspend">
+                <button type="submit" class="btn btn-primary">Unsuspend</button>
+            </form>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form"
+                  onsubmit="return confirm('Permanently delete this user and all their content?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="btn btn-danger">Delete User</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

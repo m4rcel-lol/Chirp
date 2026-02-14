@@ -3,6 +3,8 @@ __pycache__/
 *.pyo
 .env
 app/database/*.db
+app/database/*.db-shm
+app/database/*.db-wal
 uploads/*
 !uploads/.gitkeep
 node_modules/

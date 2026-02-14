@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Community Notes - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
-    <div class="page-header"><h2>Community Notes Oversight</h2></div>
+    <div class="page-header"><h2>{{ icon('rate_review') }} Community Notes Oversight</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
+        <a href="{{ url_for('admin.community_notes') }}" class="tab active">Community Notes</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
+    </div>
     <div class="admin-table">
         {% for note in notes %}
         <div class="admin-row">
@@ -32,7 +43,7 @@
             </div>
         </div>
         {% else %}
-        <div class="empty-state"><p>No community notes yet.</p></div>
+        <div class="empty-state">{{ icon('rate_review') }}<p>No community notes yet.</p></div>
         {% endfor %}
     </div>
 </div>

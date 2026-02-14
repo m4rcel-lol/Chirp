@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Audit Log - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
-    <div class="page-header"><h2>Audit Log</h2></div>
+    <div class="page-header"><h2>{{ icon('info') }} Audit Log</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
+        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+        <a href="{{ url_for('admin.audit_log_view') }}" class="tab active">Audit Log</a>
+    </div>
     <div class="admin-table">
         {% for log in logs %}
         <div class="admin-row">
@@ -13,7 +24,7 @@
             <span>{{ log.created_at }}</span>
         </div>
         {% else %}
-        <div class="empty-state"><p>No audit log entries.</p></div>
+        <div class="empty-state">{{ icon('info') }}<p>No audit log entries.</p></div>
         {% endfor %}
     </div>
 </div>

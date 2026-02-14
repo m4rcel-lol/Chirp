@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Staff Notes - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
-    <div class="page-header"><h2>Staff Notes</h2></div>
+    <div class="page-header"><h2>{{ icon('shield') }} Staff Notes</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.staff_notes') }}" class="tab active">Staff Notes</a>
+        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
+    </div>
     <div class="admin-table">
         {% for note in notes %}
         <div class="admin-row">
@@ -15,7 +26,7 @@
             <a href="{{ url_for('posts.view_post', post_id=note.post_id) }}" class="btn btn-sm btn-outlined">View Post</a>
         </div>
         {% else %}
-        <div class="empty-state"><p>No staff notes yet.</p></div>
+        <div class="empty-state">{{ icon('shield') }}<p>No staff notes yet.</p></div>
         {% endfor %}
     </div>
 </div>

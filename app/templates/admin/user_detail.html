@@ -38,7 +38,7 @@
             <form method="POST" action="{{ url_for('admin.user_action', user_id=user.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="action" value="suspend">
-                <input type="text" name="reason" placeholder="Reason" class="md-input" style="display:inline-block;width:auto">
+                <input type="text" name="reason" placeholder="Reason" class="md-input md-input-inline">
                 <button type="submit" class="btn btn-danger">Suspend</button>
             </form>
             {% else %}

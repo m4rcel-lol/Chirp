@@ -1257,9 +1257,9 @@ select.md-input { cursor: pointer; }
 
 @media (min-width: 769px) and (max-width: 1100px) {
     .sidebar { width: 72px; padding: 8px; }
-    .sidebar .nav-item span:not(.nav-icon):not(.badge) { display: none; }
+    .sidebar .nav-item > span:not(.badge) { display: none; }
     .sidebar .logo-text { display: none; }
-    .sidebar .btn-compose span { display: none; }
+    .sidebar .btn-compose > span { display: none; }
     .sidebar .profile-info { display: none; }
     .sidebar .logout-form { display: none; }
     .sidebar .nav-item { justify-content: center; padding: 12px; }

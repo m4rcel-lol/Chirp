@@ -14,8 +14,15 @@
             <img src="{{ notif.actor_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
             {% endif %}
             <div class="notif-content">
-                {% set notif_icon_name = 'favorite' if notif.type == 'like' else 'person_add' if notif.type == 'follow' else 'reply' if notif.type == 'reply' else 'repeat' if notif.type == 'repost' else 'alternate_email' if notif.type == 'mention' else 'mail' if notif.type == 'message' else 'notifications' %}
-                {{ icon(notif_icon_name, 'notif-icon') }}
+                {% set notif_icons = {
+                    'like': 'favorite',
+                    'follow': 'person_add',
+                    'reply': 'reply',
+                    'repost': 'repeat',
+                    'mention': 'alternate_email',
+                    'message': 'mail'
+                } %}
+                {{ icon(notif_icons.get(notif.type, 'notifications'), 'notif-icon') }}
                 <div>
                     {% if notif.actor_name %}
                     <a href="{{ url_for('auth.profile', username=notif.actor_name) }}"><strong>{{ notif.actor_display or notif.actor_name }}</strong></a>

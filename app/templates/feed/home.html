@@ -52,7 +52,7 @@
         {{ render_post(post) }}
         {% else %}
         <div class="empty-state">
-            {{ icon('group_add') }}
+            {{ icon('waving_hand') }}
             <h3>Welcome to {{ site_settings.get('site_name', 'Chirp') }}!</h3>
             <p>Follow some people to see their chirps here, or <a href="{{ url_for('feed.explore') }}">explore</a> what's trending.</p>
         </div>

@@ -98,6 +98,146 @@
     --md-sys-color-inverse-on-surface: #313033;
 }
 
+/* Medium Contrast Light */
+[data-theme="light-medium-contrast"] {
+    --md-sys-color-primary: #4B3587;
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #6950A4;
+    --md-sys-color-on-primary-container: #FFFFFF;
+    --md-sys-color-secondary: #4A4458;
+    --md-sys-color-on-secondary: #FFFFFF;
+    --md-sys-color-secondary-container: #625B71;
+    --md-sys-color-tertiary: #633B48;
+    --md-sys-color-error: #8C1D18;
+    --md-sys-color-on-error: #FFFFFF;
+    --md-sys-color-error-container: #B3261E;
+    --md-sys-color-background: #FFFBFE;
+    --md-sys-color-on-background: #1C1B1F;
+    --md-sys-color-surface: #FFFBFE;
+    --md-sys-color-on-surface: #1C1B1F;
+    --md-sys-color-surface-variant: #E7E0EC;
+    --md-sys-color-on-surface-variant: #3E3A43;
+    --md-sys-color-outline: #5E5A66;
+    --md-sys-color-outline-variant: #B0A9B7;
+    --md-sys-color-surface-container: #F3EDF7;
+    --md-sys-color-surface-container-low: #F7F2FA;
+    --md-sys-color-surface-container-high: #ECE6F0;
+    --md-sys-color-inverse-surface: #313033;
+    --md-sys-color-inverse-on-surface: #F4EFF4;
+}
+
+/* High Contrast Light */
+[data-theme="light-high-contrast"] {
+    --md-sys-color-primary: #21005D;
+    --md-sys-color-on-primary: #FFFFFF;
+    --md-sys-color-primary-container: #4B3587;
+    --md-sys-color-on-primary-container: #FFFFFF;
+    --md-sys-color-secondary: #2D2740;
+    --md-sys-color-on-secondary: #FFFFFF;
+    --md-sys-color-secondary-container: #4A4458;
+    --md-sys-color-tertiary: #3F1D2C;
+    --md-sys-color-error: #4E0002;
+    --md-sys-color-on-error: #FFFFFF;
+    --md-sys-color-error-container: #8C1D18;
+    --md-sys-color-background: #FFFBFE;
+    --md-sys-color-on-background: #1C1B1F;
+    --md-sys-color-surface: #FFFBFE;
+    --md-sys-color-on-surface: #000000;
+    --md-sys-color-surface-variant: #E7E0EC;
+    --md-sys-color-on-surface-variant: #21005D;
+    --md-sys-color-outline: #2D2740;
+    --md-sys-color-outline-variant: #49454F;
+    --md-sys-color-surface-container: #F3EDF7;
+    --md-sys-color-surface-container-low: #F7F2FA;
+    --md-sys-color-surface-container-high: #ECE6F0;
+    --md-sys-color-inverse-surface: #313033;
+    --md-sys-color-inverse-on-surface: #FFFFFF;
+}
+
+/* Medium Contrast Dark */
+[data-theme="dark-medium-contrast"] {
+    --md-sys-color-primary: #E8DEFF;
+    --md-sys-color-on-primary: #2D1367;
+    --md-sys-color-primary-container: #B39DDB;
+    --md-sys-color-on-primary-container: #000000;
+    --md-sys-color-secondary: #E0D6F0;
+    --md-sys-color-on-secondary: #28223A;
+    --md-sys-color-secondary-container: #A89FB8;
+    --md-sys-color-tertiary: #FFCDD9;
+    --md-sys-color-error: #FFBAB1;
+    --md-sys-color-on-error: #490002;
+    --md-sys-color-error-container: #FF5449;
+    --md-sys-color-background: #1C1B1F;
+    --md-sys-color-on-background: #E6E1E5;
+    --md-sys-color-surface: #1C1B1F;
+    --md-sys-color-on-surface: #FFFBFE;
+    --md-sys-color-surface-variant: #49454F;
+    --md-sys-color-on-surface-variant: #D6CFE0;
+    --md-sys-color-outline: #ADA6B6;
+    --md-sys-color-outline-variant: #5E5A66;
+    --md-sys-color-surface-container: #211F26;
+    --md-sys-color-surface-container-low: #1D1B20;
+    --md-sys-color-surface-container-high: #2B2930;
+    --md-sys-color-inverse-surface: #E6E1E5;
+    --md-sys-color-inverse-on-surface: #313033;
+}
+
+/* High Contrast Dark */
+[data-theme="dark-high-contrast"] {
+    --md-sys-color-primary: #FFF9FF;
+    --md-sys-color-on-primary: #000000;
+    --md-sys-color-primary-container: #E8DEFF;
+    --md-sys-color-on-primary-container: #000000;
+    --md-sys-color-secondary: #FFF9FF;
+    --md-sys-color-on-secondary: #000000;
+    --md-sys-color-secondary-container: #E0D6F0;
+    --md-sys-color-tertiary: #FFF9F9;
+    --md-sys-color-error: #FFF9F9;
+    --md-sys-color-on-error: #000000;
+    --md-sys-color-error-container: #FFBAB1;
+    --md-sys-color-background: #1C1B1F;
+    --md-sys-color-on-background: #FFFFFF;
+    --md-sys-color-surface: #1C1B1F;
+    --md-sys-color-on-surface: #FFFFFF;
+    --md-sys-color-surface-variant: #49454F;
+    --md-sys-color-on-surface-variant: #FFF9FF;
+    --md-sys-color-outline: #D6CFE0;
+    --md-sys-color-outline-variant: #ADA6B6;
+    --md-sys-color-surface-container: #211F26;
+    --md-sys-color-surface-container-low: #1D1B20;
+    --md-sys-color-surface-container-high: #2B2930;
+    --md-sys-color-inverse-surface: #E6E1E5;
+    --md-sys-color-inverse-on-surface: #000000;
+}
+
+/* AMOLED Dark - Pure black for OLED displays */
+[data-theme="amoled"] {
+    --md-sys-color-primary: #D0BCFF;
+    --md-sys-color-on-primary: #381E72;
+    --md-sys-color-primary-container: #4F378B;
+    --md-sys-color-on-primary-container: #EADDFF;
+    --md-sys-color-secondary: #CCC2DC;
+    --md-sys-color-on-secondary: #332D41;
+    --md-sys-color-secondary-container: #4A4458;
+    --md-sys-color-tertiary: #EFB8C8;
+    --md-sys-color-error: #F2B8B5;
+    --md-sys-color-on-error: #601410;
+    --md-sys-color-error-container: #8C1D18;
+    --md-sys-color-background: #000000;
+    --md-sys-color-on-background: #E6E1E5;
+    --md-sys-color-surface: #000000;
+    --md-sys-color-on-surface: #E6E1E5;
+    --md-sys-color-surface-variant: #2B2930;
+    --md-sys-color-on-surface-variant: #CAC4D0;
+    --md-sys-color-outline: #938F99;
+    --md-sys-color-outline-variant: #49454F;
+    --md-sys-color-surface-container: #0E0E11;
+    --md-sys-color-surface-container-low: #0A0A0D;
+    --md-sys-color-surface-container-high: #1A1A1E;
+    --md-sys-color-inverse-surface: #E6E1E5;
+    --md-sys-color-inverse-on-surface: #313033;
+}
+
 /* ── Reset & Base ────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -179,8 +319,13 @@ img { max-width: 100%; height: auto; }
     backdrop-filter: blur(12px);
     background: rgba(255, 251, 254, 0.88);
 }
-[data-theme="dark"] .page-header {
+[data-theme="dark"] .page-header,
+[data-theme="dark-medium-contrast"] .page-header,
+[data-theme="dark-high-contrast"] .page-header {
     background: rgba(28, 27, 31, 0.85);
+}
+[data-theme="amoled"] .page-header {
+    background: rgba(0, 0, 0, 0.85);
 }
 
 .page-header h2 { font-size: 1.25rem; font-weight: 700; }
@@ -423,12 +568,22 @@ select.md-input { cursor: pointer; }
 
 .radio-group { display: flex; gap: 16px; }
 
+.theme-radio-group {
+    flex-wrap: wrap;
+}
+
 .radio-option, .checkbox-option {
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
     padding: 8px 0;
+}
+
+.radio-option span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* ── Auth Pages ──────────────────────────────────────────────── */

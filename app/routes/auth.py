@@ -286,6 +286,10 @@ def settings():
 
         if action == 'theme':
             theme = request.form.get('theme', 'auto')
+            valid_themes = ['auto', 'light', 'dark', 'light-medium-contrast', 'light-high-contrast',
+                            'dark-medium-contrast', 'dark-high-contrast', 'amoled']
+            if theme not in valid_themes:
+                theme = 'auto'
             accent = request.form.get('accent_color', '#6750A4')
             db.execute('UPDATE users SET theme = ?, accent_color = ? WHERE id = ?',
                        (theme, accent, g.user['id']))

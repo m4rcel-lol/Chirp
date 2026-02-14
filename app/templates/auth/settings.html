@@ -16,18 +16,38 @@
                 <input type="hidden" name="action" value="theme">
                 <div class="form-field">
                     <label>Theme</label>
-                    <div class="radio-group">
+                    <div class="radio-group theme-radio-group">
                         <label class="radio-option">
                             <input type="radio" name="theme" value="light" {% if current_user.theme == 'light' %}checked{% endif %}>
-                            <span>Light</span>
+                            <span>{{ icon('brightness_6', '', 18) }} Light</span>
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="theme" value="dark" {% if current_user.theme == 'dark' %}checked{% endif %}>
-                            <span>Dark</span>
+                            <span>{{ icon('brightness_6', '', 18) }} Dark</span>
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="theme" value="auto" {% if current_user.theme == 'auto' %}checked{% endif %}>
-                            <span>Auto</span>
+                            <span>{{ icon('brightness_6', '', 18) }} Auto</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="light-medium-contrast" {% if current_user.theme == 'light-medium-contrast' %}checked{% endif %}>
+                            <span>{{ icon('contrast', '', 18) }} Light Medium Contrast</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="light-high-contrast" {% if current_user.theme == 'light-high-contrast' %}checked{% endif %}>
+                            <span>{{ icon('contrast', '', 18) }} Light High Contrast</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="dark-medium-contrast" {% if current_user.theme == 'dark-medium-contrast' %}checked{% endif %}>
+                            <span>{{ icon('contrast', '', 18) }} Dark Medium Contrast</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="dark-high-contrast" {% if current_user.theme == 'dark-high-contrast' %}checked{% endif %}>
+                            <span>{{ icon('contrast', '', 18) }} Dark High Contrast</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="amoled" {% if current_user.theme == 'amoled' %}checked{% endif %}>
+                            <span>{{ icon('brightness_6', '', 18) }} AMOLED Dark</span>
                         </label>
                     </div>
                 </div>

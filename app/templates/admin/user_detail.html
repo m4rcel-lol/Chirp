@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}User: {{ user.username }} - Admin{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ url_for('admin.users') }}" class="btn-icon"><span class="material-symbols-rounded">arrow_back</span></a>
+        <a href="{{ url_for('admin.users') }}" class="btn-icon">{{ icon('arrow_back') }}</a>
         <h2>@{{ user.username }}</h2>
     </div>
 
@@ -12,7 +13,7 @@
             <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-lg">
             <div>
                 <h3>{{ user.display_name }}
-                    {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                    {% if user.is_verified %}{{ icon('verified', 'verified-badge') }}{% endif %}
                 </h3>
                 <p>@{{ user.username }} · {{ user.email }}</p>
                 <p>Joined: {{ user.created_at[:10] }} · {{ post_count }} posts</p>

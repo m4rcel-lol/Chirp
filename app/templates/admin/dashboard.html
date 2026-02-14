@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Admin Dashboard - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Admin Dashboard</h2>
@@ -19,35 +20,35 @@
 
     <div class="stats-grid">
         <div class="stat-card">
-            <span class="material-symbols-rounded">group</span>
+            {{ icon('group') }}
             <div class="stat-info">
                 <span class="stat-value">{{ stats.total_users }}</span>
                 <span class="stat-label">Total Users</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="material-symbols-rounded">chat</span>
+            {{ icon('chat') }}
             <div class="stat-info">
                 <span class="stat-value">{{ stats.total_posts }}</span>
                 <span class="stat-label">Total Posts</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="material-symbols-rounded">trending_up</span>
+            {{ icon('trending_up') }}
             <div class="stat-info">
                 <span class="stat-value">{{ stats.posts_today }}</span>
                 <span class="stat-label">Posts Today</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="material-symbols-rounded">flag</span>
+            {{ icon('flag') }}
             <div class="stat-info">
                 <span class="stat-value">{{ stats.pending_reports }}</span>
                 <span class="stat-label">Pending Reports</span>
             </div>
         </div>
         <div class="stat-card">
-            <span class="material-symbols-rounded">person_add</span>
+            {{ icon('person_add') }}
             <div class="stat-info">
                 <span class="stat-value">{{ stats.new_users_today }}</span>
                 <span class="stat-label">New Users Today</span>

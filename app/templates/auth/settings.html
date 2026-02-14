@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Settings - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Settings</h2>
@@ -9,7 +10,7 @@
     <div class="settings-sections">
         <!-- Theme Settings -->
         <section class="settings-card">
-            <h3><span class="material-symbols-rounded">palette</span> Appearance</h3>
+            <h3>{{ icon('palette') }} Appearance</h3>
             <form method="POST" class="settings-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="action" value="theme">
@@ -41,7 +42,7 @@
 
         <!-- Privacy Settings -->
         <section class="settings-card">
-            <h3><span class="material-symbols-rounded">lock</span> Privacy</h3>
+            <h3>{{ icon('lock') }} Privacy</h3>
             <form method="POST" class="settings-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="action" value="privacy">
@@ -57,7 +58,7 @@
 
         <!-- Change Password -->
         <section class="settings-card">
-            <h3><span class="material-symbols-rounded">key</span> Change Password</h3>
+            <h3>{{ icon('key') }} Change Password</h3>
             <form method="POST" class="settings-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="action" value="password">

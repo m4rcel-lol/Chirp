@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Conversation - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container messages-page">
     <div class="page-header">
         <a href="{{ url_for('messages.inbox') }}" class="btn-icon">
-            <span class="material-symbols-rounded">arrow_back</span>
+            {{ icon('arrow_back') }}
         </a>
         <div class="conv-header-info">
             {% for member in members %}
@@ -36,7 +37,7 @@
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <input type="text" name="content" placeholder="Type a message..." class="message-input" autofocus autocomplete="off">
         <button type="submit" class="btn btn-primary btn-icon">
-            <span class="material-symbols-rounded">send</span>
+            {{ icon('send') }}
         </button>
     </form>
 </div>

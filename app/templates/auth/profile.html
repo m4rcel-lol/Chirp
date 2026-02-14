@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ profile_user.display_name }} (@{{ profile_user.username }}) - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <a href="javascript:history.back()" class="btn-icon">
-            <span class="material-symbols-rounded">arrow_back</span>
+            {{ icon('arrow_back') }}
         </a>
         <div>
             <h2>{{ profile_user.display_name }}</h2>
@@ -36,7 +37,7 @@
                 <h2 class="profile-name">
                     {{ profile_user.display_name }}
                     {% if profile_user.is_verified %}
-                    <span class="material-symbols-rounded verified-badge">verified</span>
+                    {{ icon('verified', 'verified-badge') }}
                     {% endif %}
                 </h2>
                 <span class="profile-username">@{{ profile_user.username }}</span>
@@ -47,12 +48,12 @@
 
                 <div class="profile-meta">
                     {% if profile_user.location %}
-                    <span><span class="material-symbols-rounded">location_on</span> {{ profile_user.location }}</span>
+                    <span>{{ icon('location_on') }} {{ profile_user.location }}</span>
                     {% endif %}
                     {% if profile_user.website %}
-                    <span><span class="material-symbols-rounded">link</span> <a href="{{ profile_user.website }}" rel="nofollow noopener" target="_blank">{{ profile_user.website[:30] }}</a></span>
+                    <span>{{ icon('link') }} <a href="{{ profile_user.website }}" rel="nofollow noopener" target="_blank">{{ profile_user.website[:30] }}</a></span>
                     {% endif %}
-                    <span><span class="material-symbols-rounded">calendar_month</span> Joined {{ profile_user.created_at[:10] }}</span>
+                    <span>{{ icon('calendar_month') }} Joined {{ profile_user.created_at[:10] }}</span>
                 </div>
 
                 <div class="profile-stats">
@@ -69,7 +70,7 @@
         {{ render_post(post) }}
         {% else %}
         <div class="empty-state">
-            <span class="material-symbols-rounded">chat_bubble</span>
+            {{ icon('chat_bubble') }}
             <p>No chirps yet</p>
         </div>
         {% endfor %}

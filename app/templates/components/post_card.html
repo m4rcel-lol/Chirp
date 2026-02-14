@@ -1,9 +1,10 @@
+{% from "components/icons.html" import icon %}
 {% macro render_post(post, show_actions=true) %}
 <article class="post-card" id="post-{{ post.id }}">
     {% if post.get('staff_notes') %}
     {% for note in post.staff_notes %}
     <div class="staff-note staff-note-{{ note.note_type }}">
-        <span class="material-symbols-rounded">shield</span>
+        {{ icon('shield') }}
         <strong>Staff Note ({{ note.note_type }}):</strong> {{ note.content }}
         <small>— {{ note.display_name }}</small>
     </div>
@@ -17,7 +18,7 @@
                 <span class="display-name">
                     {{ post.display_name }}
                     {% if post.is_verified %}
-                    <span class="material-symbols-rounded verified-badge">verified</span>
+                    {{ icon('verified', 'verified-badge') }}
                     {% endif %}
                 </span>
                 <span class="username">@{{ post.username }}</span>
@@ -51,7 +52,7 @@
     {% if post.get('community_notes') %}
     {% for note in post.community_notes %}
     <div class="community-note">
-        <span class="material-symbols-rounded">rate_review</span>
+        {{ icon('rate_review') }}
         <div class="note-content">
             <strong>Community Note:</strong> {{ note.content }}
             <small class="note-meta">{{ note.helpful_count }} found helpful · {{ note.category }}</small>
@@ -63,14 +64,14 @@
     {% if show_actions %}
     <div class="post-actions">
         <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="action-btn">
-            <span class="material-symbols-rounded">chat_bubble</span>
+            {{ icon('chat_bubble') }}
             <span>{{ post.reply_count or 0 }}</span>
         </a>
 
         <form method="POST" action="{{ url_for('posts.repost', post_id=post.id) }}" class="inline-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button type="submit" class="action-btn repost-btn">
-                <span class="material-symbols-rounded">repeat</span>
+                {{ icon('repeat') }}
                 <span>{{ post.repost_count or 0 }}</span>
             </button>
         </form>
@@ -78,7 +79,7 @@
         <form method="POST" action="{{ url_for('posts.like_post', post_id=post.id) }}" class="inline-form like-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button type="submit" class="action-btn like-btn {% if post.is_liked %}liked{% endif %}">
-                <span class="material-symbols-rounded">{{ 'favorite' if post.is_liked else 'favorite_border' }}</span>
+                {{ icon('favorite' if post.is_liked else 'favorite_border') }}
                 <span>{{ post.like_count or 0 }}</span>
             </button>
         </form>
@@ -86,12 +87,12 @@
         <form method="POST" action="{{ url_for('posts.bookmark_post', post_id=post.id) }}" class="inline-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button type="submit" class="action-btn bookmark-btn {% if post.is_bookmarked %}bookmarked{% endif %}">
-                <span class="material-symbols-rounded">{{ 'bookmark' if post.is_bookmarked else 'bookmark_border' }}</span>
+                {{ icon('bookmark' if post.is_bookmarked else 'bookmark_border') }}
             </button>
         </form>
 
         <button class="action-btn share-btn" onclick="sharePost({{ post.id }})">
-            <span class="material-symbols-rounded">share</span>
+            {{ icon('share') }}
         </button>
     </div>
     {% endif %}

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Compose - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <a href="{{ url_for('feed.home') }}" class="btn-icon">
-            <span class="material-symbols-rounded">arrow_back</span>
+            {{ icon('arrow_back') }}
         </a>
         <h2>New Chirp</h2>
     </div>
@@ -38,11 +39,11 @@
         <div class="compose-toolbar">
             <div class="compose-options">
                 <label class="btn-icon" title="Add images">
-                    <span class="material-symbols-rounded">image</span>
+                    {{ icon('image') }}
                     <input type="file" name="media" multiple accept="image/*" hidden>
                 </label>
                 <button type="button" class="btn-icon" title="Add poll" onclick="togglePoll()">
-                    <span class="material-symbols-rounded">ballot</span>
+                    {{ icon('ballot') }}
                 </button>
             </div>
             <button type="submit" class="btn btn-primary">Chirp</button>

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Post by {{ post.display_name }} - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <a href="javascript:history.back()" class="btn-icon">
-            <span class="material-symbols-rounded">arrow_back</span>
+            {{ icon('arrow_back') }}
         </a>
         <h2>Chirp</h2>
     </div>
@@ -14,7 +15,7 @@
         {% if post.get('staff_notes') %}
         {% for note in post.staff_notes %}
         <div class="staff-note staff-note-{{ note.note_type }}">
-            <span class="material-symbols-rounded">shield</span>
+            {{ icon('shield') }}
             <strong>Staff Note ({{ note.note_type }}):</strong> {{ note.content }}
         </div>
         {% endfor %}
@@ -27,7 +28,7 @@
                     <span class="display-name">
                         {{ post.display_name }}
                         {% if post.is_verified %}
-                        <span class="material-symbols-rounded verified-badge">verified</span>
+                        {{ icon('verified', 'verified-badge') }}
                         {% endif %}
                     </span>
                     <span class="username">@{{ post.username }}</span>
@@ -77,7 +78,7 @@
         {% if post.get('community_notes') %}
         {% for note in post.community_notes %}
         <div class="community-note">
-            <span class="material-symbols-rounded">rate_review</span>
+            {{ icon('rate_review') }}
             <div class="note-content">
                 <strong>Community Note:</strong> {{ note.content }}
                 <small class="note-meta">{{ note.helpful_count }} found helpful · {{ note.category }}</small>
@@ -113,25 +114,25 @@
             <form method="POST" action="{{ url_for('posts.like_post', post_id=post.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="action-btn like-btn {% if post.is_liked %}liked{% endif %}">
-                    <span class="material-symbols-rounded">{{ 'favorite' if post.is_liked else 'favorite_border' }}</span>
+                    {{ icon('favorite' if post.is_liked else 'favorite_border') }}
                     <span>Like</span>
                 </button>
             </form>
             <form method="POST" action="{{ url_for('posts.repost', post_id=post.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="action-btn">
-                    <span class="material-symbols-rounded">repeat</span>
+                    {{ icon('repeat') }}
                     <span>Rechirp</span>
                 </button>
             </form>
             <a href="{{ url_for('posts.compose', quote=post.id) }}" class="action-btn">
-                <span class="material-symbols-rounded">format_quote</span>
+                {{ icon('format_quote') }}
                 <span>Quote</span>
             </a>
             <form method="POST" action="{{ url_for('posts.bookmark_post', post_id=post.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="action-btn">
-                    <span class="material-symbols-rounded">{{ 'bookmark' if post.is_bookmarked else 'bookmark_border' }}</span>
+                    {{ icon('bookmark' if post.is_bookmarked else 'bookmark_border') }}
                     <span>Save</span>
                 </button>
             </form>
@@ -143,14 +144,14 @@
             <form method="POST" action="{{ url_for('posts.pin_post', post_id=post.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn btn-sm btn-outlined">
-                    <span class="material-symbols-rounded">push_pin</span> {{ 'Unpin' if post.is_pinned else 'Pin' }}
+                    {{ icon('push_pin') }} {{ 'Unpin' if post.is_pinned else 'Pin' }}
                 </button>
             </form>
             <form method="POST" action="{{ url_for('posts.delete_post', post_id=post.id) }}" class="inline-form"
                   onsubmit="return confirm('Delete this chirp?')">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn btn-sm btn-danger">
-                    <span class="material-symbols-rounded">delete</span> Delete
+                    {{ icon('delete') }} Delete
                 </button>
             </form>
         </div>
@@ -160,7 +161,7 @@
         {% if current_user.is_admin or current_user.is_moderator %}
         <details class="admin-actions-section">
             <summary class="btn btn-sm btn-outlined">
-                <span class="material-symbols-rounded">admin_panel_settings</span> Mod Actions
+                {{ icon('admin_panel_settings') }} Mod Actions
             </summary>
             <div class="admin-actions-content">
                 <form method="POST" action="{{ url_for('admin.add_staff_note', post_id=post.id) }}" class="settings-form">
@@ -208,7 +209,7 @@
         <!-- Community note form -->
         <details class="community-note-form">
             <summary class="btn btn-sm btn-outlined">
-                <span class="material-symbols-rounded">rate_review</span> Add Community Note
+                {{ icon('rate_review') }} Add Community Note
             </summary>
             <form method="POST" action="{{ url_for('posts.add_community_note', post_id=post.id) }}" class="settings-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">

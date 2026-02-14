@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Messages - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Messages</h2>
         <a href="{{ url_for('messages.new_conversation') }}" class="btn btn-primary btn-sm">
-            <span class="material-symbols-rounded">edit</span> New
+            {{ icon('edit') }} New
         </a>
     </div>
 
@@ -32,7 +33,7 @@
         </a>
         {% else %}
         <div class="empty-state">
-            <span class="material-symbols-rounded">mail</span>
+            {{ icon('mail') }}
             <p>No conversations yet</p>
             <a href="{{ url_for('messages.new_conversation') }}" class="btn btn-primary">Start a conversation</a>
         </div>

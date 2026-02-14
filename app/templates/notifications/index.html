@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Notifications - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
 {% block content %}
+{% from "components/icons.html" import icon %}
 <div class="page-container">
     <div class="page-header">
         <h2>Notifications</h2>
@@ -13,15 +14,15 @@
             <img src="{{ notif.actor_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
             {% endif %}
             <div class="notif-content">
-                <span class="material-symbols-rounded notif-icon">
-                    {% if notif.type == 'like' %}favorite
-                    {% elif notif.type == 'follow' %}person_add
-                    {% elif notif.type == 'reply' %}reply
-                    {% elif notif.type == 'repost' %}repeat
-                    {% elif notif.type == 'mention' %}alternate_email
-                    {% elif notif.type == 'message' %}mail
-                    {% else %}notifications{% endif %}
-                </span>
+                {% set notif_icons = {
+                    'like': 'favorite',
+                    'follow': 'person_add',
+                    'reply': 'reply',
+                    'repost': 'repeat',
+                    'mention': 'alternate_email',
+                    'message': 'mail'
+                } %}
+                {{ icon(notif_icons.get(notif.type, 'notifications'), 'notif-icon') }}
                 <div>
                     {% if notif.actor_name %}
                     <a href="{{ url_for('auth.profile', username=notif.actor_name) }}"><strong>{{ notif.actor_display or notif.actor_name }}</strong></a>
@@ -41,13 +42,13 @@
             </div>
             {% if notif.post_id %}
             <a href="{{ url_for('posts.view_post', post_id=notif.post_id) }}" class="notif-link">
-                <span class="material-symbols-rounded">chevron_right</span>
+                {{ icon('chevron_right') }}
             </a>
             {% endif %}
         </div>
         {% else %}
         <div class="empty-state">
-            <span class="material-symbols-rounded">notifications_off</span>
+            {{ icon('notifications_off') }}
             <p>No notifications yet</p>
         </div>
         {% endfor %}

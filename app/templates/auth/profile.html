@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ profile_user.display_name }} (@{{ profile_user.username }}) - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="javascript:history.back()" class="btn-icon">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </a>
+        <div>
+            <h2>{{ profile_user.display_name }}</h2>
+            <small>{{ post_count }} chirps</small>
+        </div>
+    </div>
+
+    <div class="profile-section">
+        <div class="profile-banner" style="background: {% if profile_user.banner_pic %}url('{{ profile_user.banner_pic }}'){% else %}linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary)){% endif %}; background-size: cover;">
+        </div>
+        <div class="profile-info-section">
+            <div class="profile-avatar-row">
+                <img src="{{ profile_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="{{ profile_user.username }}" class="avatar-lg profile-avatar">
+                <div class="profile-actions">
+                    {% if is_own_profile %}
+                    <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-outlined">Edit profile</a>
+                    {% else %}
+                    <form method="POST" action="{{ url_for('auth.follow', user_id=profile_user.id) }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit" class="btn {% if is_following %}btn-outlined{% else %}btn-primary{% endif %}">
+                            {{ 'Following' if is_following else 'Follow' }}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <h2 class="profile-name">
+                    {{ profile_user.display_name }}
+                    {% if profile_user.is_verified %}
+                    <span class="material-symbols-rounded verified-badge">verified</span>
+                    {% endif %}
+                </h2>
+                <span class="profile-username">@{{ profile_user.username }}</span>
+
+                {% if profile_user.bio %}
+                <p class="profile-bio">{{ profile_user.bio }}</p>
+                {% endif %}
+
+                <div class="profile-meta">
+                    {% if profile_user.location %}
+                    <span><span class="material-symbols-rounded">location_on</span> {{ profile_user.location }}</span>
+                    {% endif %}
+                    {% if profile_user.website %}
+                    <span><span class="material-symbols-rounded">link</span> <a href="{{ profile_user.website }}" rel="nofollow noopener" target="_blank">{{ profile_user.website[:30] }}</a></span>
+                    {% endif %}
+                    <span><span class="material-symbols-rounded">calendar_month</span> Joined {{ profile_user.created_at[:10] }}</span>
+                </div>
+
+                <div class="profile-stats">
+                    <span><strong>{{ following_count }}</strong> Following</span>
+                    <span><strong>{{ follower_count }}</strong> Followers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="posts-list">
+        {% from "components/post_card.html" import render_post %}
+        {% for post in posts %}
+        {{ render_post(post) }}
+        {% else %}
+        <div class="empty-state">
+            <span class="material-symbols-rounded">chat_bubble</span>
+            <p>No chirps yet</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

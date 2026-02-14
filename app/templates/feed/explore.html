@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Explore - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Explore</h2>
+    </div>
+
+    <div class="search-bar">
+        <form action="{{ url_for('feed.search') }}" method="GET">
+            <div class="search-input-wrapper">
+                <span class="material-symbols-rounded">search</span>
+                <input type="text" name="q" placeholder="Search Chirp..." class="search-input">
+            </div>
+        </form>
+    </div>
+
+    <!-- Trending hashtags -->
+    {% if trending_tags %}
+    <section class="explore-section">
+        <h3>Trending</h3>
+        <div class="trending-list">
+            {% for tag in trending_tags %}
+            <a href="{{ url_for('feed.hashtag', tag=tag.tag) }}" class="trending-item">
+                <div class="trending-info">
+                    <span class="trending-label">Trending</span>
+                    <span class="trending-tag">#{{ tag.tag }}</span>
+                    <span class="trending-count">{{ tag.recent_count }} chirps</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Who to follow -->
+    {% if suggestions %}
+    <section class="explore-section">
+        <h3>Who to follow</h3>
+        <div class="suggestions-list">
+            {% for user in suggestions %}
+            <div class="suggestion-card">
+                <a href="{{ url_for('auth.profile', username=user.username) }}" class="suggestion-info">
+                    <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
+                    <div>
+                        <span class="display-name">
+                            {{ user.display_name }}
+                            {% if user.is_verified %}
+                            <span class="material-symbols-rounded verified-badge">verified</span>
+                            {% endif %}
+                        </span>
+                        <span class="username">@{{ user.username }}</span>
+                    </div>
+                </a>
+                <form method="POST" action="{{ url_for('auth.follow', user_id=user.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Trending posts -->
+    {% if posts %}
+    <section class="explore-section">
+        <h3>Popular chirps</h3>
+        <div class="posts-list">
+            {% from "components/post_card.html" import render_post %}
+            {% for post in posts %}
+            {{ render_post(post) }}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Settings - {{ site_settings.get('site_name', 'Chirp') }}{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h2>Settings</h2>
+    </div>
+
+    <div class="settings-sections">
+        <!-- Theme Settings -->
+        <section class="settings-card">
+            <h3><span class="material-symbols-rounded">palette</span> Appearance</h3>
+            <form method="POST" class="settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="theme">
+                <div class="form-field">
+                    <label>Theme</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="light" {% if current_user.theme == 'light' %}checked{% endif %}>
+                            <span>Light</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="dark" {% if current_user.theme == 'dark' %}checked{% endif %}>
+                            <span>Dark</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="theme" value="auto" {% if current_user.theme == 'auto' %}checked{% endif %}>
+                            <span>Auto</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="accent_color">Accent Color</label>
+                    <input type="color" id="accent_color" name="accent_color"
+                           value="{{ current_user.accent_color or '#6750A4' }}" class="color-picker">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </section>
+
+        <!-- Privacy Settings -->
+        <section class="settings-card">
+            <h3><span class="material-symbols-rounded">lock</span> Privacy</h3>
+            <form method="POST" class="settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="privacy">
+                <div class="form-field">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="is_private" {% if current_user.is_private %}checked{% endif %}>
+                        <span>Private account (only approved followers can see your chirps)</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </section>
+
+        <!-- Change Password -->
+        <section class="settings-card">
+            <h3><span class="material-symbols-rounded">key</span> Change Password</h3>
+            <form method="POST" class="settings-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="action" value="password">
+                <div class="form-field">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" name="current_password" required class="md-input">
+                </div>
+                <div class="form-field">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" required minlength="8" class="md-input">
+                </div>
+                <div class="form-field">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required class="md-input">
+                </div>
+                <button type="submit" class="btn btn-primary">Change Password</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

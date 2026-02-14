@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Site Settings - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>Site Settings</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab active">Settings</a>
+    </div>
+    <form method="POST" class="settings-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-field">
+            <label for="site_name">Site Name</label>
+            <input type="text" id="site_name" name="site_name" value="{{ settings.get('site_name', 'Chirp') }}" class="md-input">
+        </div>
+        <div class="form-field">
+            <label for="site_description">Site Description</label>
+            <textarea id="site_description" name="site_description" class="md-input" rows="2">{{ settings.get('site_description', '') }}</textarea>
+        </div>
+        <div class="form-field">
+            <label>Registration Mode</label>
+            <select name="registration_mode" class="md-input">
+                <option value="open" {% if settings.get('registration_mode') == 'open' %}selected{% endif %}>Open</option>
+                <option value="closed" {% if settings.get('registration_mode') == 'closed' %}selected{% endif %}>Closed</option>
+                <option value="invite" {% if settings.get('registration_mode') == 'invite' %}selected{% endif %}>Invite Only</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label for="theme_color">Theme Color</label>
+            <input type="color" id="theme_color" name="theme_color" value="{{ settings.get('theme_color', '#6750A4') }}" class="color-picker">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+</div>
+{% endblock %}

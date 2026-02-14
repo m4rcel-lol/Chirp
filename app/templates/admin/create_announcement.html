@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Create Announcement - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <a href="{{ url_for('admin.announcements') }}" class="btn-icon"><span class="material-symbols-rounded">arrow_back</span></a>
+        <h2>Create Announcement</h2>
+    </div>
+    <form method="POST" class="settings-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <div class="form-field">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required class="md-input">
+        </div>
+        <div class="form-field">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" required rows="4" class="md-input"></textarea>
+        </div>
+        <div class="form-field">
+            <label>Type</label>
+            <select name="type" class="md-input">
+                <option value="banner">Banner (top of page)</option>
+                <option value="modal">Modal (on login)</option>
+                <option value="in_feed">In-feed</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label>Target</label>
+            <select name="target" class="md-input">
+                <option value="all">All users</option>
+                <option value="verified">Verified only</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Announcement</button>
+    </form>
+</div>
+{% endblock %}

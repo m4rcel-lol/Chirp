@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Reports - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>Reports</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab active">Reports</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+    </div>
+    <div class="search-tabs">
+        <a href="?status=pending" class="tab {% if status == 'pending' %}active{% endif %}">Pending</a>
+        <a href="?status=resolved" class="tab {% if status == 'resolved' %}active{% endif %}">Resolved</a>
+        <a href="?status=dismissed" class="tab {% if status == 'dismissed' %}active{% endif %}">Dismissed</a>
+    </div>
+    <div class="admin-table">
+        {% for report in reports %}
+        <div class="admin-row report-row">
+            <div>
+                <strong>{{ report.reason }}</strong>
+                {% if report.post_content %}<p class="text-muted">{{ report.post_content[:100] }}</p>{% endif %}
+                <small>Reported by @{{ report.reporter_name }}{% if report.reported_username %} about @{{ report.reported_username }}{% endif %}</small>
+            </div>
+            {% if report.status == 'pending' %}
+            <div class="admin-actions">
+                <form method="POST" action="{{ url_for('admin.report_action', report_id=report.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="resolve">
+                    <button type="submit" class="btn btn-sm btn-primary">Resolve</button>
+                </form>
+                {% if report.reported_post_id %}
+                <form method="POST" action="{{ url_for('admin.report_action', report_id=report.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="delete_post">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete Post</button>
+                </form>
+                {% endif %}
+                <form method="POST" action="{{ url_for('admin.report_action', report_id=report.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="dismiss">
+                    <button type="submit" class="btn btn-sm btn-outlined">Dismiss</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="empty-state"><p>No {{ status }} reports.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

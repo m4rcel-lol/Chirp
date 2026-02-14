@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}User Management - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>User Management</h2></div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
+        <a href="{{ url_for('admin.users') }}" class="tab active">Users</a>
+        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
+        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
+        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
+    </div>
+    <form action="{{ url_for('admin.users') }}" method="GET" class="search-bar">
+        <div class="search-input-wrapper">
+            <span class="material-symbols-rounded">search</span>
+            <input type="text" name="q" value="{{ query }}" placeholder="Search users..." class="search-input">
+        </div>
+    </form>
+    <div class="admin-table">
+        {% for user in users %}
+        <div class="admin-row user-row">
+            <div class="user-info">
+                <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
+                <div>
+                    <a href="{{ url_for('admin.user_detail', user_id=user.id) }}"><strong>{{ user.display_name }}</strong></a>
+                    <span class="username">@{{ user.username }}</span>
+                    {% if user.is_verified %}<span class="material-symbols-rounded verified-badge">verified</span>{% endif %}
+                    {% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}
+                    {% if user.is_suspended %}<span class="badge badge-danger">Suspended</span>{% endif %}
+                </div>
+            </div>
+            <span>{{ user.post_count }} posts</span>
+            <span>{{ user.created_at[:10] }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

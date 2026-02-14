@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Community Notes - Admin{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="page-header"><h2>Community Notes Oversight</h2></div>
+    <div class="admin-table">
+        {% for note in notes %}
+        <div class="admin-row">
+            <div>
+                <span class="badge">{{ note.category }}</span>
+                <span class="badge badge-{{ note.status }}">{{ note.status }}</span>
+                <strong>{{ note.content }}</strong>
+                <p class="text-muted">On: {{ note.post_content[:80] }}</p>
+                <small>By @{{ note.author_name }} · 👍 {{ note.helpful_count }} 👎 {{ note.not_helpful_count }}</small>
+            </div>
+            <div class="admin-actions">
+                <form method="POST" action="{{ url_for('admin.community_note_action', note_id=note.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="approve">
+                    <button type="submit" class="btn btn-sm btn-primary">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.community_note_action', note_id=note.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit" class="btn btn-sm btn-outlined">Reject</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.community_note_action', note_id=note.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state"><p>No community notes yet.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

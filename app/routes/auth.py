@@ -452,6 +452,8 @@ def affiliate_user(user_id):
         db.execute('UPDATE users SET affiliated_with = NULL WHERE id = ?', (user_id,))
         db.commit()
         flash(f'Removed affiliation for @{target["username"]}', 'info')
+    elif target['affiliated_with'] is not None:
+        flash(f'@{target["username"]} is already affiliated with another corporation.', 'error')
     else:
         # Add affiliation and make the user verified
         db.execute('UPDATE users SET affiliated_with = ?, is_verified = 1 WHERE id = ?',

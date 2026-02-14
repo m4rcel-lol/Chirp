@@ -4,6 +4,53 @@ A modern, self-hosted social media platform built with Flask, SQLite3, and Mater
 
 ![Login Page](https://github.com/user-attachments/assets/2751d578-8aa7-4bdc-9c60-a5f746984e3d)
 
+## Screenshots
+
+### Home Feed
+The home timeline with quick compose, announcements, and a chronological post feed.
+
+![Home Feed](https://github.com/user-attachments/assets/dc1f6930-1238-40c9-b7f3-66265aa06cc5)
+
+### Explore & Search
+Discover trending hashtags, suggested users to follow, and popular chirps.
+
+![Explore](https://github.com/user-attachments/assets/c07ee439-ff63-4142-a4ff-32073e8289f2)
+
+### Compose
+Create chirps with text, images, and polls. Character count and media toolbar included.
+
+![Compose](https://github.com/user-attachments/assets/731f9fd7-da5d-488d-b470-fd7319489c9b)
+
+### Profile
+User profiles with avatar, bio, location, follower/following counts, and pinned chirps.
+
+![Profile](https://github.com/user-attachments/assets/d1d08442-b97f-4788-a2e0-957b8c2c4166)
+
+### Notifications
+Real-time notification feed for likes, follows, replies, rechirps, mentions, and messages.
+
+![Notifications](https://github.com/user-attachments/assets/73c24e2c-9e4e-4714-905a-31cf927a9c64)
+
+### Direct Messages
+One-on-one and group conversations with unread indicators.
+
+![Messages](https://github.com/user-attachments/assets/377225eb-03c9-4a27-b61e-939366a84948)
+
+### Settings
+Appearance (light/dark/auto theme, accent color), privacy controls, and password management.
+
+![Settings](https://github.com/user-attachments/assets/8746f640-ac16-4df8-98b3-d3026ee615c0)
+
+### Admin Dashboard
+Real-time stats, recent registrations, pending reports, and full navigation to all admin tools.
+
+![Admin Dashboard](https://github.com/user-attachments/assets/4a2bc226-4db9-4ee1-889a-d7650f905561)
+
+### First-Run Setup
+Guided setup wizard to create the admin account and configure your instance.
+
+![Setup](https://github.com/user-attachments/assets/8d83f773-7bd1-4900-ab09-94fd6b222762)
+
 ## Features
 
 ### Core

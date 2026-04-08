@@ -49,9 +49,9 @@
     --md-sys-color-on-info-container: #001C38;
 
     --md-sys-elevation-0: none;
-    --md-sys-elevation-1: 0 6px 14px color-mix(in srgb, var(--md-sys-color-on-background) 10%, transparent);
-    --md-sys-elevation-2: 0 12px 28px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
-    --md-sys-elevation-3: 0 20px 42px color-mix(in srgb, var(--md-sys-color-on-background) 24%, transparent);
+    --md-sys-elevation-1: 0 6px 14px rgba(15, 23, 42, 0.12);
+    --md-sys-elevation-2: 0 12px 28px rgba(15, 23, 42, 0.18);
+    --md-sys-elevation-3: 0 20px 42px rgba(15, 23, 42, 0.24);
 
     --md-sys-motion-easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
     --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -332,6 +332,7 @@ html {
 
 body {
     font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--md-sys-color-background);
     background:
         radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 45%),
         radial-gradient(circle at 86% -12%, color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent), transparent 42%),
@@ -342,6 +343,14 @@ body {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+    :root {
+        --md-sys-elevation-1: 0 6px 14px color-mix(in srgb, var(--md-sys-color-on-background) 10%, transparent);
+        --md-sys-elevation-2: 0 12px 28px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
+        --md-sys-elevation-3: 0 20px 42px color-mix(in srgb, var(--md-sys-color-on-background) 24%, transparent);
+    }
 }
 
 /* ── SVG Icon Base ───────────────────────────────────────────── */

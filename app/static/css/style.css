@@ -1,4 +1,4 @@
-/* ── Modern Design System for Chirp ─────────────────────────────── */
+/* ── Modern Design System for Chirp (retains md-sys token naming) ─ */
 
 /* ── CSS Custom Properties (Design Tokens) ───────────────────── */
 :root {
@@ -333,10 +333,7 @@ html {
 body {
     font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background-color: var(--md-sys-color-background);
-    background:
-        radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 45%),
-        radial-gradient(circle at 86% -12%, color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent), transparent 42%),
-        var(--md-sys-color-background);
+    background: var(--md-sys-color-background);
     color: var(--md-sys-color-on-background);
     line-height: 1.5;
     display: flex;
@@ -350,6 +347,13 @@ body {
         --md-sys-elevation-1: 0 6px 14px color-mix(in srgb, var(--md-sys-color-on-background) 10%, transparent);
         --md-sys-elevation-2: 0 12px 28px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
         --md-sys-elevation-3: 0 20px 42px color-mix(in srgb, var(--md-sys-color-on-background) 24%, transparent);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 45%),
+            radial-gradient(circle at 86% -12%, color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent), transparent 42%),
+            var(--md-sys-color-background);
     }
 }
 
@@ -372,7 +376,7 @@ img { max-width: 100%; height: auto; }
     top: 0;
     bottom: 0;
     width: var(--sidebar-width);
-    background: color-mix(in srgb, var(--md-sys-color-surface) 98%, transparent);
+    background: var(--md-sys-color-surface);
     border-right: 1px solid var(--md-sys-color-outline-variant);
     display: flex;
     flex-direction: column;
@@ -392,7 +396,7 @@ img { max-width: 100%; height: auto; }
     padding: 0;
     min-height: 100vh;
     border-right: 1px solid var(--md-sys-color-outline-variant);
-    background: color-mix(in srgb, var(--md-sys-color-surface) 94%, transparent);
+    background: var(--md-sys-color-surface);
 }
 
 .main-content.auth-layout {
@@ -409,7 +413,7 @@ img { max-width: 100%; height: auto; }
 .page-header {
     position: sticky;
     top: 0;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 96%, transparent);
+    background: var(--md-sys-color-surface);
     padding: 14px 16px;
     display: flex;
     align-items: center;
@@ -418,15 +422,15 @@ img { max-width: 100%; height: auto; }
     z-index: 10;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline) 30%, transparent);
+    box-shadow: 0 1px 0 var(--md-sys-color-outline-variant);
 }
 [data-theme="dark"] .page-header,
 [data-theme="dark-medium-contrast"] .page-header,
 [data-theme="dark-high-contrast"] .page-header {
-    background: color-mix(in srgb, var(--md-sys-color-surface) 88%, transparent);
+    background: var(--md-sys-color-surface);
 }
 [data-theme="amoled"] .page-header {
-    background: color-mix(in srgb, var(--md-sys-color-surface) 88%, transparent);
+    background: var(--md-sys-color-surface);
 }
 
 .page-header h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
@@ -477,7 +481,7 @@ img { max-width: 100%; height: auto; }
     font-weight: 700;
     color: var(--md-sys-color-on-surface);
     background: var(--md-sys-color-secondary-container);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+    box-shadow: inset 0 0 0 1px var(--md-sys-color-outline);
 }
 
 .nav-item .nav-icon { width: 26px; height: 26px; }
@@ -549,11 +553,11 @@ img { max-width: 100%; height: auto; }
     bottom: 0;
     left: 0;
     right: 0;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container) 88%, transparent);
+    background: var(--md-sys-color-surface-container);
     border-top: none;
     padding: 0;
     z-index: 100;
-    box-shadow: 0 -8px 24px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
+    box-shadow: var(--md-sys-elevation-2);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }
@@ -807,7 +811,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
 .auth-card {
     width: 100%;
     max-width: 420px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 98%, transparent);
+    background: var(--md-sys-color-surface-container-low);
     border-radius: var(--md-sys-shape-corner-xl);
     padding: 48px 36px;
     box-shadow: var(--md-sys-elevation-2);
@@ -1221,7 +1225,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 85%, transparent);
+    background: var(--md-sys-color-surface-container-high);
     border-radius: var(--md-sys-shape-corner-full);
     padding: 0 16px;
 }
@@ -1281,7 +1285,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
     color: var(--md-sys-color-primary);
     border-bottom-color: var(--md-sys-color-primary);
     font-weight: 600;
-    background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+    background: var(--md-sys-color-primary-container);
 }
 
 .explore-section {
@@ -1457,7 +1461,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
 .settings-form { padding: 16px; }
 .settings-card {
     margin: 16px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 95%, transparent);
+    background: var(--md-sys-color-surface-container-low);
     border-radius: var(--md-sys-shape-corner-large);
     padding: 20px;
     border: 1px solid var(--md-sys-color-outline-variant);
@@ -1557,7 +1561,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 95%, transparent);
+    background: var(--md-sys-color-surface-container-low);
     border-radius: var(--md-sys-shape-corner-large);
     transition: box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard), transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
     border: 1px solid var(--md-sys-color-outline-variant);

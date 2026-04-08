@@ -4,30 +4,30 @@ A modern, self-hosted social media platform built with Flask, SQLite3, and a cle
 
 ![Login Page](docs/screenshots/login.png)
 
-## Screenshots
+## Screenshots (Redesigned UI)
 
-### First-Run Setup
-Guided setup wizard to create the admin account and configure your instance.
+### First-Run Setup (Redesigned)
+Guided setup wizard with the new Nightwave visual style.
 
 ![Setup](docs/screenshots/setup.png)
 
-### Home Feed
-The home timeline with quick compose and a chronological post feed.
+### Home Feed (Redesigned)
+The home timeline with the refreshed glassmorphism-inspired layout.
 
 ![Home Feed](docs/screenshots/home.png)
 
-### Explore
-Discover trending hashtags, suggested users to follow, and popular chirps.
+### Explore (Redesigned)
+Discover trending hashtags and suggested users in the updated modern interface.
 
 ![Explore](docs/screenshots/explore.png)
 
-### Compose
-Create chirps with text, images, and polls. Character count and media toolbar included.
+### Compose (Redesigned)
+Create chirps with a cleaner compose experience and updated controls.
 
 ![Compose](docs/screenshots/compose.png)
 
-### Profile
-User profiles with avatar, bio, follower/following counts, and chirp history.
+### Profile (Redesigned)
+User profiles with updated cards, spacing, and visual hierarchy.
 
 ![Profile](docs/screenshots/profile.png)
 

@@ -2,76 +2,34 @@
 
 A modern, self-hosted social media platform built with Flask, SQLite3, and a clean, contemporary adaptive UI.
 
-![Login Page](https://github.com/user-attachments/assets/0fe045fd-53dd-46cc-8595-4f969bd9137c)
+![Login Page](docs/screenshots/login.png)
 
 ## Screenshots
-
-### Home Feed
-The home timeline with quick compose, announcements, and a chronological post feed.
-
-![Home Feed](https://github.com/user-attachments/assets/b6fc436c-2605-4f74-b83b-dbbba11bc71f)
-
-### Explore & Search
-Discover trending hashtags, suggested users to follow, and popular chirps.
-
-![Explore](https://github.com/user-attachments/assets/19a699eb-d996-4541-b5fa-3e55e657d970)
-
-### Compose
-Create chirps with text, images, and polls. Character count and media toolbar included.
-
-![Compose](https://github.com/user-attachments/assets/0f0f0eae-a116-48f6-b46e-edd2070fe5da)
-
-### Profile
-User profiles with avatar, bio, location, follower/following counts, and pinned chirps.
-
-![Profile](https://github.com/user-attachments/assets/7284b692-3cd9-4e48-903c-8edf86f49cf4)
-
-### Notifications
-Real-time notification feed for likes, follows, replies, rechirps, mentions, and messages.
-
-![Notifications](https://github.com/user-attachments/assets/6bba4976-ab74-44d6-a013-3049407d576b)
-
-### Direct Messages
-One-on-one and group conversations with unread indicators.
-
-![Messages](https://github.com/user-attachments/assets/b60de368-7b7d-48f4-808b-f31bb5a18d6d)
-
-### Settings
-Appearance (light/dark/auto theme, accent color), privacy controls, and password management.
-
-![Settings](https://github.com/user-attachments/assets/374abc5c-e931-4062-ad33-3ca25793626a)
-
-### Admin Dashboard
-Real-time stats, recent registrations, pending reports, and full navigation to all admin tools.
-
-![Admin Dashboard](https://github.com/user-attachments/assets/d6f10dc2-f75a-4a3d-9da4-b1fcfd372d5e)
 
 ### First-Run Setup
 Guided setup wizard to create the admin account and configure your instance.
 
-![Setup](https://github.com/user-attachments/assets/e672b75a-f472-465d-83f3-f5a20d9f70c6)
+![Setup](docs/screenshots/setup.png)
 
-### Verification Badges
-Verified badges are displayed throughout the platform — in posts, profiles, notifications, messages, sidebar, and search results.
+### Home Feed
+The home timeline with quick compose and a chronological post feed.
 
-![Verified Badges on Home Feed](https://github.com/user-attachments/assets/8fa9755a-9a49-4747-9697-4aab17304ba5)
+![Home Feed](docs/screenshots/home.png)
 
-### Corporation Verification
-Corporation-verified users get a distinct badge and a square profile picture. Admins can grant or revoke corporation verification from the user detail page.
+### Explore
+Discover trending hashtags, suggested users to follow, and popular chirps.
 
-![Corporation Verified Profile](https://github.com/user-attachments/assets/cf9b4c34-e778-4055-a544-2153e206058a)
+![Explore](docs/screenshots/explore.png)
 
-![Admin Corp Verification](https://github.com/user-attachments/assets/b37f7dd3-fef6-47fd-a994-4d7ac2703cce)
+### Compose
+Create chirps with text, images, and polls. Character count and media toolbar included.
 
-### Affiliation System
-Corporation-verified users can affiliate other users, granting them a verified badge with the corporation's profile picture displayed alongside it. The affiliate button appears on profile pages when viewed by a corp-verified user.
+![Compose](docs/screenshots/compose.png)
 
-![Affiliate Button](https://github.com/user-attachments/assets/e4b20eda-a66a-4783-ac8e-3491aaecc4ac)
+### Profile
+User profiles with avatar, bio, follower/following counts, and chirp history.
 
-### Explore with Badges
-All verification types are visible in the explore page suggestions and popular chirps.
-
-![Explore with Badges](https://github.com/user-attachments/assets/b9b66854-bebc-4c03-a513-250167b5a485)
+![Profile](docs/screenshots/profile.png)
 
 ## Features
 

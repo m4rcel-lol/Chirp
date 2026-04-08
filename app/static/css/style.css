@@ -49,9 +49,9 @@
     --md-sys-color-on-info-container: #001C38;
 
     --md-sys-elevation-0: none;
-    --md-sys-elevation-1: 0 6px 14px rgba(23, 40, 86, 0.08);
-    --md-sys-elevation-2: 0 12px 28px rgba(23, 40, 86, 0.14);
-    --md-sys-elevation-3: 0 20px 42px rgba(23, 40, 86, 0.2);
+    --md-sys-elevation-1: 0 6px 14px color-mix(in srgb, var(--md-sys-color-on-background) 10%, transparent);
+    --md-sys-elevation-2: 0 12px 28px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
+    --md-sys-elevation-3: 0 20px 42px color-mix(in srgb, var(--md-sys-color-on-background) 24%, transparent);
 
     --md-sys-motion-easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
     --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -333,8 +333,8 @@ html {
 body {
     font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background:
-        radial-gradient(circle at 12% -10%, rgba(79, 124, 255, 0.16), transparent 45%),
-        radial-gradient(circle at 86% -12%, rgba(78, 140, 255, 0.14), transparent 42%),
+        radial-gradient(circle at 12% -10%, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 45%),
+        radial-gradient(circle at 86% -12%, color-mix(in srgb, var(--md-sys-color-tertiary) 14%, transparent), transparent 42%),
         var(--md-sys-color-background);
     color: var(--md-sys-color-on-background);
     line-height: 1.5;
@@ -409,7 +409,7 @@ img { max-width: 100%; height: auto; }
     z-index: 10;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 1px 0 rgba(148, 163, 184, 0.18);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--md-sys-color-outline) 30%, transparent);
 }
 [data-theme="dark"] .page-header,
 [data-theme="dark-medium-contrast"] .page-header,
@@ -544,7 +544,7 @@ img { max-width: 100%; height: auto; }
     border-top: none;
     padding: 0;
     z-index: 100;
-    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.14);
+    box-shadow: 0 -8px 24px color-mix(in srgb, var(--md-sys-color-on-background) 16%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }

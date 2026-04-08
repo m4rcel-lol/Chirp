@@ -1,6 +1,6 @@
 # 🐦 Chirp
 
-A modern, self-hosted social media platform built with Flask, SQLite3, and Material You design.
+A modern, self-hosted social media platform built with Flask, SQLite3, and a clean, contemporary adaptive UI.
 
 ![Login Page](https://github.com/user-attachments/assets/0fe045fd-53dd-46cc-8595-4f969bd9137c)
 
@@ -100,7 +100,7 @@ All verification types are visible in the explore page suggestions and popular c
 - **Notifications**: Likes, follows, replies, rechirps, mentions, messages with unread count
 
 ### Design
-- **Material You / Material Design 3**: Dynamic color theming, smooth animations
+- **Modern Adaptive UI**: Contemporary styling system with dynamic color theming and smooth animations
 - **Light/Dark/Auto themes** with accent color picker
 - **Responsive Design**: Desktop sidebar navigation, mobile bottom navigation
 - **Accessibility**: Reduced motion support, proper semantic HTML, keyboard shortcuts
@@ -178,7 +178,7 @@ chirp/
 │   │   └── setup.py            # First-run setup wizard
 │   ├── templates/              # Jinja2 HTML templates
 │   └── static/
-│       ├── css/style.css       # Material You stylesheet
+│       ├── css/style.css       # Modern adaptive stylesheet
 │       ├── js/app.js           # Client-side JavaScript
 │       └── img/                # Static images
 ├── uploads/                    # User-uploaded media

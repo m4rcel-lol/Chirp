@@ -363,7 +363,7 @@ img { max-width: 100%; height: auto; }
     top: 0;
     bottom: 0;
     width: var(--sidebar-width);
-    background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 98%, transparent);
     border-right: 1px solid var(--md-sys-color-outline-variant);
     display: flex;
     flex-direction: column;
@@ -400,7 +400,7 @@ img { max-width: 100%; height: auto; }
 .page-header {
     position: sticky;
     top: 0;
-    background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 96%, transparent);
     padding: 14px 16px;
     display: flex;
     align-items: center;
@@ -688,7 +688,7 @@ img { max-width: 100%; height: auto; }
     padding: 12px 16px;
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: var(--md-sys-shape-corner-small);
-    background: color-mix(in srgb, var(--md-sys-color-surface) 94%, transparent);
+    background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     font-size: 1rem;
     font-family: inherit;
@@ -798,7 +798,7 @@ input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible {
 .auth-card {
     width: 100%;
     max-width: 420px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 92%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 98%, transparent);
     border-radius: var(--md-sys-shape-corner-xl);
     padding: 48px 36px;
     box-shadow: var(--md-sys-elevation-2);

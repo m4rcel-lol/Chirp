@@ -2,39 +2,39 @@
 
 A modern, self-hosted social media platform built with Flask, SQLite3, and a clean, contemporary adaptive UI.
 
-![Login Page](docs/screenshots/login.png)
+![Login Page](docs/screenshots/login-m3.png)
 
 ## Screenshots (Material You UI)
 
 ### First-Run Setup
 Guided setup wizard, styled with the Material 3 design system.
 
-![Setup](docs/screenshots/setup.png)
+![Setup](docs/screenshots/setup-m3.png)
 
 ### Home Feed
 The home timeline with the navigation drawer, quick compose, and dynamic color derived from your seed color.
 
-![Home Feed](docs/screenshots/home.png)
+![Home Feed](docs/screenshots/home-m3.png)
 
 ### Explore
 Discover trending hashtags, suggested users, and popular chirps.
 
-![Explore](docs/screenshots/explore.png)
+![Explore](docs/screenshots/explore-m3.png)
 
 ### Compose
 Create chirps with image attachments, polls, and a live character counter that follows the site's configured limit.
 
-![Compose](docs/screenshots/compose.png)
+![Compose](docs/screenshots/compose-m3.png)
 
 ### Profile
 User profiles with tonal banner, avatar, stats, and follow actions.
 
-![Profile](docs/screenshots/profile.png)
+![Profile](docs/screenshots/profile-m3.png)
 
 ### Admin Dashboard
 Instance stats at a glance, quick actions, and the full moderation suite.
 
-![Admin Dashboard](docs/screenshots/admin.png)
+![Admin Dashboard](docs/screenshots/admin-m3.png)
 
 ## Features
 

@@ -4,32 +4,37 @@ A modern, self-hosted social media platform built with Flask, SQLite3, and a cle
 
 ![Login Page](docs/screenshots/login.png)
 
-## Screenshots (Redesigned UI)
+## Screenshots (Material You UI)
 
-### First-Run Setup (Redesigned)
-Guided setup wizard with the new Nightwave visual style.
+### First-Run Setup
+Guided setup wizard, styled with the Material 3 design system.
 
 ![Setup](docs/screenshots/setup.png)
 
-### Home Feed (Redesigned)
-The home timeline with the refreshed glassmorphism-inspired layout.
+### Home Feed
+The home timeline with the navigation drawer, quick compose, and dynamic color derived from your seed color.
 
 ![Home Feed](docs/screenshots/home.png)
 
-### Explore (Redesigned)
-Discover trending hashtags and suggested users in the updated modern interface.
+### Explore
+Discover trending hashtags, suggested users, and popular chirps.
 
 ![Explore](docs/screenshots/explore.png)
 
-### Compose (Redesigned)
-Create chirps with a cleaner compose experience and updated controls.
+### Compose
+Create chirps with image attachments, polls, and a live character counter that follows the site's configured limit.
 
 ![Compose](docs/screenshots/compose.png)
 
-### Profile (Redesigned)
-User profiles with updated cards, spacing, and visual hierarchy.
+### Profile
+User profiles with tonal banner, avatar, stats, and follow actions.
 
 ![Profile](docs/screenshots/profile.png)
+
+### Admin Dashboard
+Instance stats at a glance, quick actions, and the full moderation suite.
+
+![Admin Dashboard](docs/screenshots/admin.png)
 
 ## Features
 

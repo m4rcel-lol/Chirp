@@ -20,6 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Material 3 ripple on interactive elements
+document.addEventListener('pointerdown', (e) => {
+    const target = e.target.closest('.btn, .btn-icon, .nav-item, .action-btn, .tab, .chip, .poll-vote-btn');
+    if (!target || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const rect = target.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const ripple = document.createElement('span');
+    ripple.className = 'md-ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    target.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+});
+
 // Share post
 function sharePost(postId) {
     const url = window.location.origin + '/post/' + postId;

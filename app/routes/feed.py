@@ -48,7 +48,11 @@ def home():
 
     page = request.args.get('page', 1, type=int)
     db = g.db
-    posts = get_feed_posts(db, g.user, page)
+    try:
+        per_page = max(5, min(100, int(g.site_settings.get('posts_per_page', 20))))
+    except (TypeError, ValueError):
+        per_page = 20
+    posts = get_feed_posts(db, g.user, page, per_page)
 
     # Get active announcements
     announcements = db.execute('''

@@ -46,7 +46,8 @@ def register():
         return redirect(url_for('feed.home'))
 
     enable_reg = os.environ.get('ENABLE_REGISTRATION', 'true').lower() == 'true'
-    if not enable_reg:
+    registration_mode = g.site_settings.get('registration_mode', 'open')
+    if not enable_reg or registration_mode == 'closed':
         flash('Registration is currently closed.', 'error')
         return redirect(url_for('auth.login'))
 
@@ -58,6 +59,12 @@ def register():
         display_name = bleach.clean(request.form.get('display_name', '').strip())
 
         errors = []
+
+        if registration_mode == 'invite':
+            expected = g.site_settings.get('invite_code', '')
+            supplied = request.form.get('invite_code', '').strip()
+            if not expected or not secrets.compare_digest(supplied, expected):
+                errors.append('A valid invite code is required to register.')
         if not username or len(username) < 3 or len(username) > 30:
             errors.append('Username must be 3-30 characters.')
         if not re.match(r'^[a-zA-Z0-9_]+$', username):

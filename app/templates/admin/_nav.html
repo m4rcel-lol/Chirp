@@ -1,0 +1,12 @@
+{% macro admin_nav(active) %}
+<div class="admin-nav">
+    <a href="{{ url_for('admin.dashboard') }}" class="tab {% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
+    <a href="{{ url_for('admin.users') }}" class="tab {% if active == 'users' %}active{% endif %}">Users</a>
+    <a href="{{ url_for('admin.reports') }}" class="tab {% if active == 'reports' %}active{% endif %}">Reports</a>
+    <a href="{{ url_for('admin.staff_notes') }}" class="tab {% if active == 'staff_notes' %}active{% endif %}">Staff Notes</a>
+    <a href="{{ url_for('admin.community_notes') }}" class="tab {% if active == 'community_notes' %}active{% endif %}">Community Notes</a>
+    <a href="{{ url_for('admin.announcements') }}" class="tab {% if active == 'announcements' %}active{% endif %}">Announcements</a>
+    <a href="{{ url_for('admin.site_settings') }}" class="tab {% if active == 'settings' %}active{% endif %}">Settings</a>
+    <a href="{{ url_for('admin.audit_log_view') }}" class="tab {% if active == 'audit_log' %}active{% endif %}">Audit Log</a>
+</div>
+{% endmacro %}

@@ -200,7 +200,7 @@
                 <div class="compose-area">
                     <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm">
                     <div class="compose-input">
-                        <textarea name="content" placeholder="Post your reply" maxlength="500" rows="2"></textarea>
+                        <textarea name="content" placeholder="Post your reply" maxlength="{{ site_settings.get('max_post_length', 500) }}" rows="2"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm">Reply</button>
                 </div>

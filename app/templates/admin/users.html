@@ -3,18 +3,10 @@
 {% block content %}
 {% from "components/icons.html" import icon %}
 {% from "components/badges.html" import verification_badges %}
+{% from "admin/_nav.html" import admin_nav %}
 <div class="page-container">
-    <div class="page-header"><h2>User Management</h2></div>
-    <div class="admin-nav">
-        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
-        <a href="{{ url_for('admin.users') }}" class="tab active">Users</a>
-        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
-        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
-        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
-        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
-        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
-        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
-    </div>
+    <div class="page-header"><h2>{{ icon('group') }} User Management</h2></div>
+    {{ admin_nav('users') }}
     <form action="{{ url_for('admin.users') }}" method="GET" class="search-bar">
         <div class="search-input-wrapper">
             {{ icon('search') }}
@@ -26,18 +18,34 @@
         <div class="admin-row user-row">
             <div class="user-info">
                 <img src="{{ user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar-sm{% if user.is_corp_verified %} corp-avatar{% endif %}">
-                <div>
-                    <a href="{{ url_for('admin.user_detail', user_id=user.id) }}"><strong>{{ user.display_name }}</strong></a>
+                <div class="user-info-text">
+                    <span>
+                        <a href="{{ url_for('admin.user_detail', user_id=user.id) }}"><strong>{{ user.display_name }}</strong></a>
+                        {{ verification_badges(user) }}
+                        {% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}
+                        {% if user.is_moderator and not user.is_admin %}<span class="badge badge-mod">Mod</span>{% endif %}
+                        {% if user.is_suspended %}<span class="badge badge-danger">Suspended</span>{% endif %}
+                    </span>
                     <span class="username">@{{ user.username }}</span>
-                    {{ verification_badges(user) }}
-                    {% if user.is_admin %}<span class="badge badge-admin">Admin</span>{% endif %}
-                    {% if user.is_suspended %}<span class="badge badge-danger">Suspended</span>{% endif %}
                 </div>
             </div>
-            <span>{{ user.post_count }} posts</span>
-            <span>{{ user.created_at[:10] }}</span>
+            <span class="text-muted">{{ user.post_count }} chirps</span>
+            <span class="text-muted">{{ user.created_at[:10] }}</span>
         </div>
+        {% else %}
+        <div class="empty-state">{{ icon('group') }}<p>No users found{% if query %} for "{{ query }}"{% endif %}.</p></div>
         {% endfor %}
     </div>
+    {% if page > 1 or has_next %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}{% if query %}&q={{ query }}{% endif %}" class="btn btn-outlined btn-sm">{{ icon('arrow_back', '', 16) }} Previous</a>
+        {% endif %}
+        <span class="pagination-page">Page {{ page }}</span>
+        {% if has_next %}
+        <a href="?page={{ page + 1 }}{% if query %}&q={{ query }}{% endif %}" class="btn btn-outlined btn-sm">Next {{ icon('chevron_right', '', 16) }}</a>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

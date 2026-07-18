@@ -19,6 +19,14 @@ ALLOWED_IMAGE_EXT = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 MAX_IMAGES = int(os.environ.get('MAX_IMAGES_PER_POST', 4))
 
 
+def max_post_length():
+    """Admin-configurable post length limit (site setting)."""
+    try:
+        return max(50, min(5000, int(g.site_settings.get('max_post_length', 500))))
+    except (TypeError, ValueError):
+        return 500
+
+
 def extract_hashtags(content):
     """Extract hashtags from post content."""
     return list(set(re.findall(r'#(\w+)', content)))
@@ -110,8 +118,9 @@ def compose():
 
     if request.method == 'POST':
         content = request.form.get('content', '').strip()
-        if not content or len(content) > 500:
-            flash('Post must be 1-500 characters.', 'error')
+        limit = max_post_length()
+        if not content or len(content) > limit:
+            flash(f'Post must be 1-{limit} characters.', 'error')
             return render_template('posts/compose.html')
 
         content = bleach.clean(content)
@@ -293,8 +302,9 @@ def reply(post_id):
         abort(404)
 
     content = bleach.clean(request.form.get('content', '').strip())
-    if not content or len(content) > 500:
-        flash('Reply must be 1-500 characters.', 'error')
+    limit = max_post_length()
+    if not content or len(content) > limit:
+        flash(f'Reply must be 1-{limit} characters.', 'error')
         return redirect(url_for('posts.view_post', post_id=post_id))
 
     media = []
@@ -351,8 +361,9 @@ def edit_post(post_id):
         return redirect(url_for('posts.view_post', post_id=post_id))
 
     new_content = bleach.clean(request.form.get('content', '').strip())
-    if not new_content or len(new_content) > 500:
-        flash('Post must be 1-500 characters.', 'error')
+    limit = max_post_length()
+    if not new_content or len(new_content) > limit:
+        flash(f'Post must be 1-{limit} characters.', 'error')
         return redirect(url_for('posts.view_post', post_id=post_id))
 
     # Save edit history

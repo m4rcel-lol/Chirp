@@ -2,41 +2,100 @@
 {% block title %}Site Settings - Admin{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "admin/_nav.html" import admin_nav %}
 <div class="page-container">
     <div class="page-header"><h2>{{ icon('settings') }} Site Settings</h2></div>
-    <div class="admin-nav">
-        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
-        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
-        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
-        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
-        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
-        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
-        <a href="{{ url_for('admin.site_settings') }}" class="tab active">Settings</a>
-        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
-    </div>
-    <form method="POST" class="settings-form">
+    {{ admin_nav('settings') }}
+
+    <form method="POST" class="settings-sections">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <div class="form-field">
-            <label for="site_name">Site Name</label>
-            <input type="text" id="site_name" name="site_name" value="{{ settings.get('site_name', 'Chirp') }}" class="md-input">
+
+        <section class="settings-card">
+            <h3>{{ icon('info') }} General</h3>
+            <div class="form-field">
+                <label for="site_name">Site Name</label>
+                <input type="text" id="site_name" name="site_name" maxlength="50" required
+                       value="{{ settings.get('site_name', 'Chirp') }}" class="md-input">
+            </div>
+            <div class="form-field">
+                <label for="site_description">Site Description</label>
+                <textarea id="site_description" name="site_description" maxlength="200"
+                          class="md-input" rows="2">{{ settings.get('site_description', '') }}</textarea>
+                <p class="field-hint">Shown on the login and sign-up pages.</p>
+            </div>
+        </section>
+
+        <section class="settings-card">
+            <h3>{{ icon('person_add') }} Registration</h3>
+            <div class="form-field">
+                <label>Registration Mode</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="registration_mode" value="open"
+                               {% if settings.get('registration_mode', 'open') == 'open' %}checked{% endif %}>
+                        <span>Open</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="registration_mode" value="invite"
+                               {% if settings.get('registration_mode') == 'invite' %}checked{% endif %}>
+                        <span>Invite Only</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="registration_mode" value="closed"
+                               {% if settings.get('registration_mode') == 'closed' %}checked{% endif %}>
+                        <span>Closed</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="invite_code">Invite Code</label>
+                <input type="text" id="invite_code" name="invite_code" maxlength="64"
+                       value="{{ settings.get('invite_code', '') }}" class="md-input"
+                       placeholder="Required for invite-only registration">
+                <p class="field-hint">New users must enter this code when registration is invite-only.</p>
+            </div>
+        </section>
+
+        <section class="settings-card">
+            <h3>{{ icon('chat') }} Content</h3>
+            <div class="form-field">
+                <label for="max_post_length">Max Chirp Length (characters)</label>
+                <input type="number" id="max_post_length" name="max_post_length" min="50" max="5000"
+                       value="{{ settings.get('max_post_length', 500) }}" class="md-input">
+            </div>
+            <div class="form-field">
+                <label for="posts_per_page">Chirps Per Page</label>
+                <input type="number" id="posts_per_page" name="posts_per_page" min="5" max="100"
+                       value="{{ settings.get('posts_per_page', 20) }}" class="md-input">
+                <p class="field-hint">How many chirps load per page on the home timeline.</p>
+            </div>
+        </section>
+
+        <section class="settings-card">
+            <h3>{{ icon('palette') }} Appearance</h3>
+            <div class="form-field">
+                <label for="theme_color">Theme Color (Material You seed)</label>
+                <input type="color" id="theme_color" name="theme_color"
+                       value="{{ settings.get('theme_color', '#6750A4') }}" class="color-picker">
+                <p class="field-hint">Every color on the site is derived from this seed. Users can override it with a personal accent color.</p>
+            </div>
+            <div class="form-field">
+                <label>Default Theme (for visitors)</label>
+                <div class="radio-group">
+                    {% for theme_opt in ['auto', 'light', 'dark', 'amoled'] %}
+                    <label class="radio-option">
+                        <input type="radio" name="default_theme" value="{{ theme_opt }}"
+                               {% if settings.get('default_theme', 'auto') == theme_opt %}checked{% endif %}>
+                        <span>{{ theme_opt | capitalize }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <div class="settings-submit">
+            <button type="submit" class="btn btn-primary">{{ icon('check_circle', '', 18) }} Save Settings</button>
         </div>
-        <div class="form-field">
-            <label for="site_description">Site Description</label>
-            <textarea id="site_description" name="site_description" class="md-input" rows="2">{{ settings.get('site_description', '') }}</textarea>
-        </div>
-        <div class="form-field">
-            <label>Registration Mode</label>
-            <select name="registration_mode" class="md-input">
-                <option value="open" {% if settings.get('registration_mode') == 'open' %}selected{% endif %}>Open</option>
-                <option value="closed" {% if settings.get('registration_mode') == 'closed' %}selected{% endif %}>Closed</option>
-                <option value="invite" {% if settings.get('registration_mode') == 'invite' %}selected{% endif %}>Invite Only</option>
-            </select>
-        </div>
-        <div class="form-field">
-            <label for="theme_color">Theme Color</label>
-            <input type="color" id="theme_color" name="theme_color" value="{{ settings.get('theme_color', '#6750A4') }}" class="color-picker">
-        </div>
-        <button type="submit" class="btn btn-primary">Save Settings</button>
     </form>
 </div>
 {% endblock %}

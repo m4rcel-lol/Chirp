@@ -49,6 +49,16 @@ def dashboard():
         'new_users_today': db.execute(
             "SELECT COUNT(*) as c FROM users WHERE created_at > datetime('now', '-24 hours')"
         ).fetchone()['c'],
+        'total_likes': db.execute('SELECT COUNT(*) as c FROM likes').fetchone()['c'],
+        'suspended_users': db.execute(
+            'SELECT COUNT(*) as c FROM users WHERE is_suspended = 1'
+        ).fetchone()['c'],
+        'active_announcements': db.execute(
+            'SELECT COUNT(*) as c FROM announcements WHERE is_active = 1'
+        ).fetchone()['c'],
+        'pending_notes': db.execute(
+            "SELECT COUNT(*) as c FROM community_notes WHERE status = 'pending'"
+        ).fetchone()['c'],
     }
 
     recent_users = db.execute(
@@ -84,14 +94,18 @@ def users():
             FROM users u
             WHERE u.username LIKE ? OR u.email LIKE ? OR u.display_name LIKE ?
             ORDER BY u.created_at DESC LIMIT ? OFFSET ?
-        ''', (f'%{query}%', f'%{query}%', f'%{query}%', per_page, offset)).fetchall()
+        ''', (f'%{query}%', f'%{query}%', f'%{query}%', per_page + 1, offset)).fetchall()
     else:
         users_list = db.execute('''
             SELECT u.*, (SELECT COUNT(*) FROM posts WHERE user_id = u.id AND is_deleted = 0) as post_count
             FROM users u ORDER BY u.created_at DESC LIMIT ? OFFSET ?
-        ''', (per_page, offset)).fetchall()
+        ''', (per_page + 1, offset)).fetchall()
 
-    return render_template('admin/users.html', users=users_list, query=query, page=page)
+    has_next = len(users_list) > per_page
+    users_list = users_list[:per_page]
+
+    return render_template('admin/users.html', users=users_list, query=query,
+                           page=page, has_next=has_next)
 
 
 @admin_bp.route('/users/<int:user_id>')
@@ -394,17 +408,70 @@ def site_settings():
     db = g.db
 
     if request.method == 'POST':
-        settings_to_update = ['site_name', 'site_description', 'registration_mode', 'theme_color']
-        for key in settings_to_update:
-            val = bleach.clean(request.form.get(key, '').strip())
-            if val:
+        import re as _re
+        errors = []
+        updates = {}
+
+        site_name = bleach.clean(request.form.get('site_name', '').strip())
+        if site_name:
+            updates['site_name'] = site_name[:50]
+        else:
+            errors.append('Site name cannot be empty.')
+
+        updates['site_description'] = bleach.clean(
+            request.form.get('site_description', '').strip())[:200]
+
+        mode = request.form.get('registration_mode', 'open')
+        if mode in ('open', 'invite', 'closed'):
+            updates['registration_mode'] = mode
+        else:
+            errors.append('Invalid registration mode.')
+
+        updates['invite_code'] = bleach.clean(
+            request.form.get('invite_code', '').strip())[:64]
+        if updates.get('registration_mode') == 'invite' and not updates['invite_code']:
+            errors.append('An invite code is required when registration is invite-only.')
+
+        theme_color = request.form.get('theme_color', '').strip()
+        if _re.match(r'^#[0-9a-fA-F]{6}$', theme_color):
+            updates['theme_color'] = theme_color
+        else:
+            errors.append('Theme color must be a hex color like #6750A4.')
+
+        default_theme = request.form.get('default_theme', 'auto')
+        if default_theme in ('auto', 'light', 'dark', 'amoled'):
+            updates['default_theme'] = default_theme
+        else:
+            errors.append('Invalid default theme.')
+
+        try:
+            max_len = int(request.form.get('max_post_length', 500))
+            if not 50 <= max_len <= 5000:
+                raise ValueError
+            updates['max_post_length'] = str(max_len)
+        except (TypeError, ValueError):
+            errors.append('Max post length must be a number between 50 and 5000.')
+
+        try:
+            per_page = int(request.form.get('posts_per_page', 20))
+            if not 5 <= per_page <= 100:
+                raise ValueError
+            updates['posts_per_page'] = str(per_page)
+        except (TypeError, ValueError):
+            errors.append('Posts per page must be a number between 5 and 100.')
+
+        if errors:
+            for e in errors:
+                flash(e, 'error')
+        else:
+            for key, val in updates.items():
                 db.execute(
                     'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
                     (key, val)
                 )
-        audit_log(db, g.user['id'], 'update_site_settings')
-        db.commit()
-        flash('Settings saved!', 'success')
+            audit_log(db, g.user['id'], 'update_site_settings')
+            db.commit()
+            flash('Settings saved!', 'success')
         return redirect(url_for('admin.site_settings'))
 
     settings = {}

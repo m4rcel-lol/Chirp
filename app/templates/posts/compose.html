@@ -20,9 +20,9 @@
         <div class="compose-area">
             <img src="{{ current_user.profile_pic or url_for('static', filename='img/default-avatar.svg') }}" alt="" class="avatar">
             <div class="compose-input">
-                <textarea name="content" placeholder="What's happening?" maxlength="500"
+                <textarea name="content" placeholder="What's happening?" maxlength="{{ site_settings.get('max_post_length', 500) }}"
                           rows="4" autofocus id="compose-textarea"></textarea>
-                <div class="char-count"><span id="char-count">0</span>/500</div>
+                <div class="char-count"><span id="char-count">0</span>/{{ site_settings.get('max_post_length', 500) }}</div>
             </div>
         </div>
 

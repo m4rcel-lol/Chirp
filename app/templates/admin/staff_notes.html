@@ -2,18 +2,10 @@
 {% block title %}Staff Notes - Admin{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "admin/_nav.html" import admin_nav %}
 <div class="page-container">
     <div class="page-header"><h2>{{ icon('shield') }} Staff Notes</h2></div>
-    <div class="admin-nav">
-        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
-        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
-        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
-        <a href="{{ url_for('admin.staff_notes') }}" class="tab active">Staff Notes</a>
-        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
-        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
-        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
-        <a href="{{ url_for('admin.audit_log_view') }}" class="tab">Audit Log</a>
-    </div>
+    {{ admin_nav('staff_notes') }}
     <div class="admin-table">
         {% for note in notes %}
         <div class="admin-row">

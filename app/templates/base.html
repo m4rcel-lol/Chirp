@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="{{ current_user.theme if current_user else 'auto' }}">
+<html lang="en" data-theme="{{ current_user.theme if current_user else site_settings.get('default_theme', 'auto') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

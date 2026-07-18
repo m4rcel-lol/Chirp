@@ -40,6 +40,13 @@
                 <input type="password" id="confirm_password" name="confirm_password" required
                        class="md-input" placeholder="Confirm your password">
             </div>
+            {% if site_settings.get('registration_mode') == 'invite' %}
+            <div class="form-field">
+                <label for="invite_code">Invite Code</label>
+                <input type="text" id="invite_code" name="invite_code" required
+                       class="md-input" placeholder="Enter your invite code">
+            </div>
+            {% endif %}
             <button type="submit" class="btn btn-primary btn-full">Create account</button>
         </form>
         <div class="auth-footer">

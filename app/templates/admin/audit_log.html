@@ -2,26 +2,22 @@
 {% block title %}Audit Log - Admin{% endblock %}
 {% block content %}
 {% from "components/icons.html" import icon %}
+{% from "admin/_nav.html" import admin_nav %}
 <div class="page-container">
     <div class="page-header"><h2>{{ icon('info') }} Audit Log</h2></div>
-    <div class="admin-nav">
-        <a href="{{ url_for('admin.dashboard') }}" class="tab">Dashboard</a>
-        <a href="{{ url_for('admin.users') }}" class="tab">Users</a>
-        <a href="{{ url_for('admin.reports') }}" class="tab">Reports</a>
-        <a href="{{ url_for('admin.staff_notes') }}" class="tab">Staff Notes</a>
-        <a href="{{ url_for('admin.community_notes') }}" class="tab">Community Notes</a>
-        <a href="{{ url_for('admin.announcements') }}" class="tab">Announcements</a>
-        <a href="{{ url_for('admin.site_settings') }}" class="tab">Settings</a>
-        <a href="{{ url_for('admin.audit_log_view') }}" class="tab active">Audit Log</a>
-    </div>
+    {{ admin_nav('audit_log') }}
     <div class="admin-table">
         {% for log in logs %}
-        <div class="admin-row">
-            <span>@{{ log.admin_name }}</span>
-            <span><strong>{{ log.action }}</strong></span>
-            {% if log.target_type %}<span>{{ log.target_type }} #{{ log.target_id }}</span>{% endif %}
-            {% if log.details %}<span>{{ log.details[:50] }}</span>{% endif %}
-            <span>{{ log.created_at }}</span>
+        <div class="admin-row log-row">
+            <div class="admin-row-main">
+                <span class="log-action">{{ log.action | replace('_', ' ') }}</span>
+                <span class="log-detail">
+                    by <strong>@{{ log.admin_name }}</strong>
+                    {% if log.target_type %} · {{ log.target_type }} #{{ log.target_id }}{% endif %}
+                    {% if log.details %} · {{ log.details[:60] }}{% endif %}
+                </span>
+            </div>
+            <span class="text-muted log-time">{{ log.created_at[:16] }}</span>
         </div>
         {% else %}
         <div class="empty-state">{{ icon('info') }}<p>No audit log entries.</p></div>

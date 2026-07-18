@@ -409,6 +409,10 @@ def init_db():
         ('site_description', 'A modern social platform'),
         ('registration_mode', 'open'),
         ('theme_color', '#6750A4'),
+        ('invite_code', ''),
+        ('max_post_length', '500'),
+        ('posts_per_page', '20'),
+        ('default_theme', 'auto'),
     ]
     for key, value in defaults:
         cursor.execute(
